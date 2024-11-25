@@ -85,36 +85,55 @@ $(document).ready(function () {
   }
 
   // Handle form submission (add/edit)
+  // Handle form submission (add/edit)
   $(".submit").click(function (e) {
     e.preventDefault();
+  
     let formData = new FormData();
     formData.append("fieldName", $("#fieldName").val());
     formData.append("fieldLocation", $("#fieldLocation").val());
     formData.append("fieldSize", $("#fieldSize").val());
-
+  
     const imgInput1 = document.getElementById("imgInput1").files[0];
     const imgInput2 = document.getElementById("imgInput2").files[0];
-
-    // Check if images are selected and append them to FormData
+  
+    // Handle first image
     if (imgInput1) {
+      // If a new image is uploaded
       formData.append("fieldImage1", imgInput1);
     } else {
-      formData.append("fieldImage1", null); // Append null if no image is selected
+      // Otherwise, send the existing image if no new one is uploaded
+      let img1Data = $("#imgPreview1").attr("src");
+      if (img1Data !== "../image/picture.png" && img1Data.startsWith("data:image/jpeg;base64,")) {
+        // Use base64 data for the image
+        formData.append("fieldImage1", img1Data.split(",")[1]);
+      }
     }
-
+  
+    // Handle second image
     if (imgInput2) {
+      // If a new image is uploaded
       formData.append("fieldImage2", imgInput2);
     } else {
-      formData.append("fieldImage2", null); // Append null if no image is selected
+      // Otherwise, send the existing image if no new one is uploaded
+      let img2Data = $("#imgPreview2").attr("src");
+      if (img2Data !== "../image/picture.png" && img2Data.startsWith("data:image/jpeg;base64,")) {
+        // Use base64 data for the image
+        formData.append("fieldImage2", img2Data.split(",")[1]);
+      }
     }
-
+  
+    // Log form data (for debugging purposes)
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
+  
+    // Determine whether to update or create new entry
     const requestType = isEdit ? "PATCH" : "POST";
     const url = isEdit
       ? `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${editId}`
       : "http://localhost:5055/cropmonitoringcollector/api/v1/fields";
-
-    console.log("Form data being sent:", formData);
-
+  
     $.ajax({
       url: url,
       type: requestType,
@@ -127,12 +146,10 @@ $(document).ready(function () {
       success: function (response, textStatus, xhr) {
         $("#loadingSpinner").hide();
         if (xhr.status === (isEdit ? 200 : 201)) {
-          alert(
-            isEdit ? "Field updated successfully!" : "Field saved successfully!"
-          );
+          alert(isEdit ? "Field updated successfully!" : "Field saved successfully!");
           $("#fieldForm").modal("hide");
           $("#myForm")[0].reset();
-          showInfo(); // Refresh table data
+          showInfo(); // Refresh the table
         } else {
           alert("Unexpected response. Please try again.");
         }
@@ -144,7 +161,7 @@ $(document).ready(function () {
       },
     });
   });
-
+  
   // View field details
   $(document).on("click", ".view-btn", function () {
     const fieldId = $(this).data("id");
@@ -175,7 +192,7 @@ $(document).ready(function () {
     });
   });
 
-  // Edit field details
+  
   // Edit field details
   $(document).on("click", ".edit-btn", function () {
     const fieldId = $(this).data("id");
