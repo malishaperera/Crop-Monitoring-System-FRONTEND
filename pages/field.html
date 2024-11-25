@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta tags for character encoding and viewport settings -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS for styling -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <!-- Bootstrap Icons for icons like buttons and actions -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+
+    <!-- Title of the page displayed in the browser tab -->
+    <title>Field CRUD Operations</title>
+
+    <!-- External CSS file for additional styling -->
+    <link rel="stylesheet" href="../styles/field.css" />
+
+    <!-- jQuery library for easier JavaScript functionality -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <!-- Main content section -->
+    <section class="p-3">
+      <div class="row">
+        <!-- New Field Button -->
+        <div class="col-12">
+          <button
+            class="btn btn-primary newField"
+            data-bs-toggle="modal"
+            data-bs-target="#fieldForm"
+          >
+            New Field <i class="bi bi-people"></i>
+            <!-- Icon inside button -->
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Table to display fields -->
+        <div class="col-12">
+          <table
+            class="table table-striped table-hover mt-3 text-center table-bordered"
+          >
+            <thead>
+              <!-- Table column headers -->
+              <tr>
+                <th>FieldImage1</th>
+                <th>FieldImage2</th>
+                <th>FieldName</th>
+                <th>FieldLocation</th>
+                <th>FieldSize</th>
+                <th>FieldCode</th> 
+                <th>Action</th>
+              </tr>
+            </thead>
+            <!-- Table body where data will be dynamically inserted -->
+            <tbody id="data"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal for adding/editing field details -->
+    <div class="modal fade" id="fieldForm" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- Modal title (changeable depending on whether it's new or edit) -->
+            <h4 class="modal-title">Fill the Form</h4>
+            <!-- Close button to close the modal -->
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Form inside the modal -->
+            <form id="myForm">
+              <!-- Image upload section -->
+              <div class="cardImage">
+                <div class="card imgholder">
+                  <!-- Label to trigger file upload -->
+                  <label for="imgInput1" class="upload">
+                    <input type="file" id="imgInput1" />
+                    <i class="bi bi-plus-circle-dotted"></i>
+                  </label>
+                  <!-- Image preview for the first field image -->
+                  <img
+                    src="../image/picture.png"
+                    alt=""
+                    width="200"
+                    height="200"
+                    class="img"
+                    id="imgPreview1"
+                  />
+                </div>
+
+                <div class="card imgholder">
+                  <!-- Label to trigger second image file upload -->
+                  <label for="imgInput2" class="upload">
+                    <input type="file" id="imgInput2" />
+                    <i class="bi bi-plus-circle-dotted"></i>
+                  </label>
+                  <!-- Image preview for the second field image -->
+                  <img
+                    src="../image/picture.png"
+                    alt=""
+                    width="200"
+                    height="200"
+                    class="img"
+                    id="imgPreview2"
+                  />
+                </div>
+              </div>
+
+              <!-- Fields for entering the field name, location, and size -->
+              <div class="inputField">
+                <div>
+                  <label for="fieldName">FieldName:</label>
+                  <input type="text" id="fieldName" />
+                </div>
+                <div>
+                  <label for="fieldLocation">FieldLocation:</label>
+                  <input type="text" id="fieldLocation" disabled />
+                </div>
+                <div>
+                  <label for="fieldSize">FieldSize:</label>
+                  <input type="number" id="fieldSize" disabled />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <!-- Close button for modal -->
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <!-- Submit button to save form data -->
+            <button type="submit" form="myForm" class="btn btn-primary submit">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Read Data Modal (to view details) -->
+    <div class="modal fade" id="readData" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Field</h4>
+            <!-- Close button for the view modal -->
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Read only form to display field details -->
+            <form id="readForm">
+              <!-- Image holders for displaying field images -->
+              <div class="cardImage">
+                <div class="card imgholder text-center">
+                  <img
+                    src=""
+                    alt=""
+                    width="200"
+                    height="200"
+                    class="showImg1"
+                    id="showImg1"
+                  />
+                </div>
+                <div class="card imgholder text-center">
+                  <img
+                    src=""
+                    alt=""
+                    width="200"
+                    height="200"
+                    class="showImg2"
+                    id="showImg2"
+                  />
+                </div>
+              </div>
+
+              <!-- Fields to display the field's name, location, and size -->
+              <div class="inputField">
+                <div>
+                  <label for="showfieldName">FieldName:</label>
+                  <input type="text" id="showfieldName" readonly />
+                </div>
+                <div>
+                  <label for="showFieldLocation">FieldLocation:</label>
+                  <input type="text" id="showFieldLocation" readonly />
+                </div>
+                <div>
+                  <label for="showfieldSize">FieldSize:</label>
+                  <input type="text" id="showfieldSize" readonly />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS bundle for modals and other features -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- External JS file for custom functionality -->
+    <script src="../scripts/field.js"></script>
+  </body>
+</html>

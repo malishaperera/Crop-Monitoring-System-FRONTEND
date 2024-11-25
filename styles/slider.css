@@ -1,0 +1,145 @@
+:root {
+  --blue: #162b1a;
+  --white: #ffffff;
+  --black2: #999;
+  --sidebar-bg: #228b22;
+  --hover-bg: #daa520;
+  --border-color: #e0e0e0;
+}
+
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: var(--sidebar-bg);
+  overflow-x: hidden;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar .sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 18px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.sidebar .sidebar-header i {
+  margin-right: 12px;
+  font-size: 24px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.sidebar.collapsed .sidebar-header span {
+  display: none;
+}
+
+.sidebar a {
+  padding: 12px 18px;
+  text-decoration: none;
+  font-size: 20px;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+}
+
+.sidebar a i {
+  margin-right: 12px;
+  font-size: 24px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.sidebar a span {
+  display: inline-block;
+  /* transition: opacity 0.3s; */
+  white-space: nowrap;
+}
+
+.sidebar a:hover {
+  background-color: var(--hover-bg);
+  color: var(--white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar a:hover i {
+  transform: rotate(20deg);
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar.collapsed a span {
+  opacity: 0;
+}
+
+.sidebar.collapsed .sidebar-footer {
+  text-align: center;
+}
+
+.sidebar.collapsed ~ #content {
+  padding-left: 80px;
+}
+
+.menu-icon {
+  position: fixed;
+  top: 15px;
+  left: 260px;
+  z-index: 2;
+  /* transition: left 0.3s; */
+}
+
+.sidebar.collapsed ~ .menu-icon {
+  left: 80px;
+}
+
+.search-bar {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+}
+
+.sidebar-footer {
+  border-top: 1px solid var(--border-color);
+}
+
+.sidebar-links {
+  margin-top: 30px;
+}
+
+#content {
+  margin-left: 260px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed + #content {
+  margin-left: 70px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+  .sidebar a span,
+  .sidebar .sidebar-header span {
+    display: none;
+  }
+  #content {
+    padding-left: 80px;
+  }
+  .menu-icon {
+    display: none;
+  }
+}
