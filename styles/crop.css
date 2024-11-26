@@ -1,9 +1,20 @@
+/* body {
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+} */
+
+
 body {
   background-color: #f0f2f5;
   font-family: Arial, sans-serif;
+  background-image: url(../image/cro-imge/crop-3.jpg); /* Use the correct path to your image */
+  background-repeat: no-repeat; /* Prevent duplication */
+  background-size: cover; /* Ensure the image covers the entire page */
+  background-attachment: fixed; /* Keep the image fixed in place when scrolling */
+  background-position: center; /* Center the image */
 }
 
-.container {
+/* .container {
   max-width: 1200px;
   margin: auto;
 }
@@ -15,8 +26,24 @@ body {
   text-align: center;
   font-size: 22px;
   font-weight: bold;
+} */
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.8); /* Add a translucent white background to make content readable */
+  padding: 20px;
+  border-radius: 8px;
 }
 
+.header-row {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+}
 .crop-card {
   display: flex;
   flex-direction: column;
