@@ -1,17 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <h1>Crop</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crop Monitoring Grid</title>
 
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="../styles/crop.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="mt-3 mb-3 text-center">
+        <h2>Crop Management</h2>
+        <button
+          class="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#addCropModal"
+        >
+          Add New Crop
+        </button>
+      </div>
 
+      <!-- Grid of Cards -->
+      <div id="cropGrid" class="row"></div>
 
+      <!-- Modal for Adding New Crop -->
+      <div
+        class="modal fade"
+        id="addCropModal"
+        tabindex="-1"
+        aria-labelledby="addCropModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addCropModalLabel">Add New Crop</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form id="addCropForm">
+                <div class="mb-3">
+                  <label for="cropName" class="form-label">Crop Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cropName"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="cropScientificName" class="form-label"
+                    >Crop Scientific Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cropScientificName"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="category" class="form-label">Category</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="category"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="season" class="form-label">Season</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="season"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="fieldCode" class="form-label">Field Code</label>
+                  <select class="form-select" id="fieldCode" required>
+                    <option value="" disabled selected>
+                      Loading Field Codes...
+                    </option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="cropImage" class="form-label">Upload Image</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="cropImage"
+                    accept="image/*"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">Add Crop</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  
-  
-</body>
+      <!-- Modal for Viewing Crop Details -->
+      <div
+        class="modal fade"
+        id="viewCropModal"
+        tabindex="-1"
+        aria-labelledby="viewCropModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="viewCropModalLabel">Crop Details</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="text-center">
+                <img
+                  id="viewCropImage"
+                  src=""
+                  alt="Crop Image"
+                  class="img-fluid mb-3"
+                />
+              </div>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <strong>Crop Name:</strong> <span id="viewCropName"></span>
+                </li>
+                <li class="list-group-item">
+                  <strong>Scientific Name:</strong>
+                  <span id="viewCropScientificName"></span>
+                </li>
+                <li class="list-group-item">
+                  <strong>Category:</strong> <span id="viewCropCategory"></span>
+                </li>
+                <li class="list-group-item">
+                  <strong>Season:</strong> <span id="viewCropSeason"></span>
+                </li>
+                <li class="list-group-item">
+                  <strong>Field Code:</strong>
+                  <span id="viewCropFieldCode"></span>
+                </li>
+                <li class="list-group-item">
+                  <strong>Crop Code:</strong> <span id="viewCropCode"></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal for Editing Crop -->
+      <!-- <div class="modal fade" id="editCropModal" tabindex="-1" aria-labelledby="editCropModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editCropModalLabel">Edit Crop</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editCropForm">
+              <div class="mb-3">
+                <label for="editCropName" class="form-label">Crop Name</label>
+                <input type="text" class="form-control" id="editCropName" required>
+              </div>
+              <div class="mb-3">
+                <label for="editCropScientificName" class="form-label">Crop Scientific Name</label>
+                <input type="text" class="form-control" id="editCropScientificName" required>
+              </div>
+              <div class="mb-3">
+                <label for="editCategory" class="form-label">Category</label>
+                <input type="text" class="form-control" id="editCategory" required>
+              </div>
+              <div class="mb-3">
+                <label for="editSeason" class="form-label">Season</label>
+                <input type="text" class="form-control" id="editSeason" required>
+              </div>
+              <div class="mb-3">
+                <label for="editFieldCode" class="form-label">Field Code</label>
+                <select class="form-select" id="editFieldCode" required>
+                  <option value="" disabled selected>Loading Field Codes...</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editCropImage" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" id="editCropImage" accept="image/*">
+              </div>
+              <button type="submit" class="btn btn-primary">Update Crop</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+      <!-- Edit Crop Modal -->
+      <div
+        class="modal fade"
+        id="editCropModal"
+        tabindex="-1"
+        aria-labelledby="editCropModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editCropModalLabel">Edit Crop</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form id="editCropForm">
+                <div class="mb-3">
+                  <label for="editCropName" class="form-label"
+                    >Crop Common Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editCropName"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="editCropScientificName" class="form-label"
+                    >Scientific Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editCropScientificName"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="editCategory" class="form-label">Category</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editCategory"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="editSeason" class="form-label">Season</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editSeason"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="editFieldCode" class="form-label"
+                    >Field Code</label
+                  >
+                  <select
+                    class="form-control"
+                    id="editFieldCode"
+                    required
+                  ></select>
+                </div>
+                <div class="mb-3">
+                  <label for="editCropImage" class="form-label"
+                    >Crop Image</label
+                  >
+                  <input type="file" class="form-control" id="editCropImage" />
+                </div>
+                <div class="mb-3">
+                  <img
+                    id="editCropImagePreview"
+                    class="img-fluid"
+                    alt="Crop Image Preview"
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  Save Changes
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/crop.js"></script>
+  </body>
 </html>

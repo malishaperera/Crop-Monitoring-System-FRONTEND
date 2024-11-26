@@ -1,0 +1,113 @@
+body {
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.header-row {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.crop-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.crop-card:hover {
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.crop-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.crop-details {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.crop-details h5 {
+  font-size: 18px;
+  color: #4CAF50;
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+.crop-details p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.crop-actions {
+  display: flex;
+  justify-content: space-between; /* Space buttons evenly */
+  align-items: center; /* Vertically center the buttons */
+}
+
+.crop-actions button {
+  margin: 5px;
+  width: 60px;
+}
+
+.btn-success, .btn-primary, .btn-danger {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-success i, .btn-primary i, .btn-danger i {
+  margin-right: 5px;
+}
+
+/* Modal Styling */
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-body input, .modal-body select, .modal-body button {
+  margin-bottom: 15px;
+}
+
+
+.modal-content {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #ddd;
+}
+
+.modal-body img {
+  max-height: 200px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.list-group-item {
+  font-size: 1rem;
+  border: none;
+  padding: 10px 15px;
+}
