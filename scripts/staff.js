@@ -243,10 +243,6 @@ async function editStaffDetails(staffMemberId) {
   }
 }
 
-
-
-
-
 // Delete staff function
 async function deleteStaff(staffMemberId) {
   if (confirm("Are you sure you want to delete this staff member?")) {
