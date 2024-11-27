@@ -212,7 +212,7 @@ async function editStaffDetails(staffMemberId) {
     const form = document.getElementById("staffForm");
     form.setAttribute("data-editing", staffMemberId); // Set the editing ID
 
-    console.log(staff.gender)
+    console.log(staff.G)
 
     document.getElementById("firstName").value = staff.firstName;
     document.getElementById("lastName").value = staff.lastName;
