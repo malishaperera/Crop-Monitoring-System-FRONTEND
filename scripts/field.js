@@ -163,34 +163,66 @@ $(document).ready(function () {
   });
   
   // View field details
-  $(document).on("click", ".view-btn", function () {
-    const fieldId = $(this).data("id");
-    $.ajax({
-      url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${fieldId}`,
-      type: "GET",
-      dataType: "json",
-      success: function (response) {
-        $("#showfieldName").val(response.fieldName);
-        $("#showFieldLocation").val(
-          `${response.fieldLocation.x},${response.fieldLocation.y}`
-        );
-        $("#showfieldSize").val(response.fieldSize);
-        $("#showImg1").attr(
-          "src",
-          `data:image/jpeg;base64,${response.fieldImage1}`
-        );
-        $("#showImg2").attr(
-          "src",
-          `data:image/jpeg;base64,${response.fieldImage2}`
-        );
-        $("#readData").modal("show");
-      },
-      error: function (xhr, status, error) {
-        alert("Failed to load field details.");
-        console.error("Error fetching field:", error);
-      },
-    });
+  // View field details
+$(document).on("click", ".view-btn", function () {
+  const fieldId = $(this).data("id"); // Get field ID from the button's data attribute
+
+  // Fetch field details via AJAX
+  $.ajax({
+    url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${fieldId}`,
+    type: "GET",
+    dataType: "json",
+    success: function (response) {
+      // Populate the modal with field details
+      $("#viewFieldName").val(response.fieldName);
+      $("#viewFieldLocation").val(`${response.fieldLocation.x}, ${response.fieldLocation.y}`);
+      $("#viewFieldSize").val(response.fieldSize);
+      $("#viewImg1").attr("src", `data:image/jpeg;base64,${response.fieldImage1}`);
+      $("#viewImg2").attr("src", `data:image/jpeg;base64,${response.fieldImage2}`);
+
+      // Populate related entities
+      populateList("#viewCropCodes", response.cropCodes);
+      populateList("#viewEquipmentIds", response.equipmentIds);
+      populateList("#viewStaffMemberIds", response.staffMemberIds);
+      populateList("#viewLogCodes", response.logCodes);
+
+      // Show the view modal
+      $("#viewFieldModal").modal("show");
+    },
+    error: function (xhr, status, error) {
+      alert("Failed to load field details.");
+      console.error("Error fetching field:", error);
+    },
   });
+});
+
+// Helper function to populate lists in the modal
+function populateList(selector, items) {
+  const listElement = $(selector);
+  listElement.empty();
+  if (items && items.length > 0) {
+    items.forEach(item => {
+      listElement.append(`<li class="list-group-item">${item}</li>`);
+    });
+  } else {
+    listElement.append(`<li class="list-group-item text-muted">No data available</li>`);
+  }
+}
+
+  
+  // Helper function to populate lists
+  // function populateList(selector, items) {
+  //   const listElement = $(selector);
+  //   listElement.empty();
+  //   if (items && items.length > 0) {
+  //     items.forEach(item => {
+  //       listElement.append(`<li>${item}</li>`);
+  //     });
+  //   } else {
+  //     listElement.append("<li>No data available</li>");
+  //   }
+  // }
+  
 
   
   // Edit field details

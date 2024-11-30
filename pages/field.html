@@ -161,66 +161,62 @@
     </div>
 
     <!-- Read Data Modal (to view details) -->
-    <div class="modal fade" id="readData" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Field</h4>
-            <!-- Close button for the view modal -->
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+    <!-- View Field Modal -->
+<div class="modal fade" id="viewFieldModal" tabindex="-1" aria-labelledby="viewFieldModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewFieldModalLabel">Field Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Field Images -->
+        <div class="row mb-3">
+          <div class="col text-center">
+            <img id="viewImg1" src="../image/picture.png" alt="Field Image 1" class="img-thumbnail" width="200" height="200">
           </div>
-          <div class="modal-body">
-            <!-- Read only form to display field details -->
-            <form id="readForm">
-              <!-- Image holders for displaying field images -->
-              <div class="cardImage">
-                <div class="card imgholder text-center">
-                  <img
-                    src=""
-                    alt=""
-                    width="200"
-                    height="200"
-                    class="showImg1"
-                    id="showImg1"
-                  />
-                </div>
-                <div class="card imgholder text-center">
-                  <img
-                    src=""
-                    alt=""
-                    width="200"
-                    height="200"
-                    class="showImg2"
-                    id="showImg2"
-                  />
-                </div>
-              </div>
-
-              <!-- Fields to display the field's name, location, and size -->
-              <div class="inputField">
-                <div>
-                  <label for="showfieldName">FieldName:</label>
-                  <input type="text" id="showfieldName" readonly />
-                </div>
-                <div>
-                  <label for="showFieldLocation">FieldLocation:</label>
-                  <input type="text" id="showFieldLocation" readonly />
-                </div>
-                <div>
-                  <label for="showfieldSize">FieldSize:</label>
-                  <input type="text" id="showfieldSize" readonly />
-                </div>
-              </div>
-            </form>
+          <div class="col text-center">
+            <img id="viewImg2" src="../image/picture.png" alt="Field Image 2" class="img-thumbnail" width="200" height="200">
           </div>
         </div>
+        <!-- Field Details -->
+        <div class="mb-3">
+          <label for="viewFieldName" class="form-label"><strong>Field Name:</strong></label>
+          <input type="text" class="form-control" id="viewFieldName" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="viewFieldLocation" class="form-label"><strong>Field Location:</strong></label>
+          <input type="text" class="form-control" id="viewFieldLocation" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="viewFieldSize" class="form-label"><strong>Field Size:</strong></label>
+          <input type="text" class="form-control" id="viewFieldSize" readonly>
+        </div>
+        <!-- Related Entity Codes -->
+        <div class="mb-3">
+          <h6>Crop Codes:</h6>
+          <ul id="viewCropCodes" class="list-group"></ul>
+        </div>
+        <div class="mb-3">
+          <h6>Equipment IDs:</h6>
+          <ul id="viewEquipmentIds" class="list-group"></ul>
+        </div>
+        <div class="mb-3">
+          <h6>Staff Member IDs:</h6>
+          <ul id="viewStaffMemberIds" class="list-group"></ul>
+        </div>
+        <div class="mb-3">
+          <h6>Log Codes:</h6>
+          <ul id="viewLogCodes" class="list-group"></ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>
+
 
     <!-- Bootstrap JS bundle for modals and other features -->
     <script
