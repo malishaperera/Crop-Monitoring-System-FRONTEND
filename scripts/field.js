@@ -172,7 +172,7 @@ $(document).ready(function () {
       success: function (response) {
         $("#showfieldName").val(response.fieldName);
         $("#showFieldLocation").val(
-          `${response.fieldLocation.x}, ${response.fieldLocation.y}`
+          `${response.fieldLocation.x},${response.fieldLocation.y}`
         );
         $("#showfieldSize").val(response.fieldSize);
         $("#showImg1").attr(
