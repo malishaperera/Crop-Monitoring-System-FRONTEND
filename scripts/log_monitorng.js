@@ -28,10 +28,10 @@ $(document).ready(function () {
   });
 
   // Add Equipment Code to table
-  $("#equipmentCodesSelect").change(function () {
+  $("#staffMemberIdSelect").change(function () {
     const equipmentCode = $(this).val();
     if (equipmentCode) {
-      $("#equipmentCodesTable tbody").append(
+      $("#staffMemberIdTable tbody").append(
         `<tr><td>${equipmentCode}</td><td><button class="btn btn-danger btn-sm deleteEquipmentCode">Delete</button></td></tr>`
       );
       $(this).val("");
@@ -77,7 +77,7 @@ $(document).ready(function () {
       observedImage: null, // Image will be set later
       fieldCodes: [],
       cropCodes: [],
-      equipmentCodes: [],
+      staffMemberIds: [],
     };
 
     // Check if an image is selected
@@ -104,8 +104,8 @@ $(document).ready(function () {
     });
 
     // Get Equipment Codes
-    $("#equipmentCodesTable tbody tr").each(function () {
-      logData.equipmentCodes.push($(this).find("td").eq(0).text());
+    $("#staffMemberIdTable tbody tr").each(function () {
+      logData.staffMemberIds.push($(this).find("td").eq(0).text());
     });
 
     // Append Log Data to Main Table
@@ -122,7 +122,7 @@ $(document).ready(function () {
   }</td>
   <td>${logData.fieldCodes.join(", ")}</td>
   <td>${logData.cropCodes.join(", ")}</td>
-  <td>${logData.equipmentCodes.join(", ")}</td>
+  <td>${logData.staffMemberIds.join(", ")}</td>
   <td>
   <button class="btn btn-success view-btn"><i class="bi bi-eye"></i></button>
   <button class="btn btn-primary edit-btn"><i class="bi bi-pencil-square"></i></button>
@@ -136,7 +136,7 @@ $(document).ready(function () {
       // Clear the tables (Field, Crop, Equipment)
       $("#fieldCodesTable tbody").empty();
       $("#cropCodesTable tbody").empty();
-      $("#equipmentCodesTable tbody").empty();
+      $("#staffMemberIdTable tbody").empty();
 
       // Reset the form
       $("#logForm")[0].reset();
