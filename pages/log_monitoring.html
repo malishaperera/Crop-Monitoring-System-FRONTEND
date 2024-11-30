@@ -1,11 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LOG-Monitoring</title>
-</head>
-<body>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoring Log</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons for icons like buttons and actions -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Monitoring Logs</h1>
+      <button
+        id="addLogBtn"
+        class="btn btn-primary mb-3"
+        data-bs-toggle="modal"
+        data-bs-target="#logModal"
+      >
+        Add Log
+      </button>
+      <table class="table table-bordered" id="logsTable">
+        <thead>
+          <tr>
+            <th>Log Code</th>
+            <th>Log Date</th>
+            <th>Observation</th>
+            <th>Image</th>
+            <th>Field Codes</th>
+            <th>Crop Codes</th>
+            <th>Equipment Codes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Log Modal -->
+    <div class="modal fade" id="logModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="logModalLabel">Add/Edit Log</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="logForm">
+              <div class="mb-3">
+                <label for="logCode" class="form-label">Log Code</label>
+                <input type="text" id="logCode" class="form-control" disabled />
+              </div>
+              <div class="mb-3">
+                <label for="logDate" class="form-label">Log Date</label>
+                <input type="date" id="logDate" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="logObservation" class="form-label"
+                  >Observation</label
+                >
+                <textarea id="logObservation" class="form-control"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="observedImage" class="form-label"
+                  >Image Upload</label
+                >
+                <input
+                  type="file"
+                  id="observedImage"
+                  class="form-control"
+                  accept="image/*"
+                />
+                <img
+                  id="imagePreview"
+                  src=""
+                  alt="Image Preview"
+                  style="max-width: 100%; max-height: 300px; display: none"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="fieldCodes" class="form-label">Field Codes</label>
+                <select id="fieldCodesSelect" class="form-select">
+                  <option value="">Select Field Code</option>
+                  <option value="F1">F1</option>
+                  <option value="F2">F2</option>
+                  <option value="F3">F3</option>
+                </select>
+                <table id="fieldCodesTable" class="table table-bordered mt-2">
+                  <thead>
+                    <tr>
+                      <th>Field Code</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="mb-3">
+                <label for="cropCodes" class="form-label">Crop Codes</label>
+                <select id="cropCodesSelect" class="form-select">
+                  <option value="">Select Crop Code</option>
+                  <option value="C1">C1</option>
+                  <option value="C2">C2</option>
+                  <option value="C3">C3</option>
+                </select>
+                <table id="cropCodesTable" class="table table-bordered mt-2">
+                  <thead>
+                    <tr>
+                      <th>Crop Code</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="mb-3">
+                <label for="equipmentCodes" class="form-label"
+                  >Equipment Codes</label
+                >
+                <select id="equipmentCodesSelect" class="form-select">
+                  <option value="">Select Equipment</option>
+                  <option value="E1">E1</option>
+                  <option value="E2">E2</option>
+                  <option value="E3">E3</option>
+                </select>
+                <table
+                  id="equipmentCodesTable"
+                  class="table table-bordered mt-2"
+                >
+                  <thead>
+                    <tr>
+                      <th>Equipment Code</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" id="saveLogBtn" class="btn btn-success">
+              Save Log
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/log_monitorng.js"></script>
+    <script>
+     
+    </script>
+  </body>
 </html>
