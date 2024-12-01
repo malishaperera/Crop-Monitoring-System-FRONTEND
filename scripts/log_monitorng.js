@@ -5,15 +5,8 @@ $(document).ready(function () {
     method: "GET",
     success: function (data) {
       if (data && Array.isArray(data)) {
-        // Log the full response to inspect structure
-        console.log(data);
-
         data.forEach(function (field) {
-          // Log field properties to verify structure
-          console.log(field.fieldCode, field.name); // Log fieldCode and name
-
-          // Assuming 'name' exists or is a different field like 'fieldName'
-          const fieldName = field.name || field.fieldName || "Unknown"; // Fallback to 'Unknown' if undefined
+          const fieldName = field.name || field.fieldName || "Unknown";
           $("#fieldCodesSelect").append(
             `<option value="${field.fieldCode}">${field.fieldCode} - ${fieldName}</option>`
           );
@@ -27,34 +20,14 @@ $(document).ready(function () {
     },
   });
 
-  // Add selected Field Code to the table
-  $("#fieldCodesSelect").change(function () {
-    const fieldCode = $(this).val();
-    const fieldText = $("#fieldCodesSelect option:selected").text(); // Get the text of the selected option
-
-    if (fieldCode) {
-      // Append selected field code to the mini table
-      $("#fieldCodesTable tbody").append(
-        `<tr><td>${fieldText}</td><td><button class="btn btn-danger btn-sm deleteFieldCode">Delete</button></td></tr>`
-      );
-      $(this).val(""); // Clear the select dropdown after adding
-    }
-  });
-
-  // Load Crop Codes dynamically from the backend
   // Load Crop Codes dynamically from the backend
   $.ajax({
     url: "http://localhost:5055/cropmonitoringcollector/api/v1/crops/allCrops",
     method: "GET",
     success: function (data) {
       if (data && Array.isArray(data)) {
-        console.log(data); // Log the full response for debugging
-
         data.forEach(function (crop) {
-          console.log(crop.cropCode, crop.cropCommonName); // Inspect individual crop properties
-
-          // Use cropCommonName for the crop name
-          const cropName = crop.cropCommonName || "Unknown"; // Fallback to 'Unknown' if undefined
+          const cropName = crop.cropCommonName || "Unknown";
           $("#cropCodesSelect").append(
             `<option value="${crop.cropCode}">${crop.cropCode} - ${cropName}</option>`
           );
@@ -68,31 +41,14 @@ $(document).ready(function () {
     },
   });
 
-  // Add Crop Code to table
-  $("#cropCodesSelect").change(function () {
-    const cropCode = $(this).val();
-    const cropText = $("#cropCodesSelect option:selected").text(); // Get the text of the selected option
-    if (cropCode) {
-      $("#cropCodesTable tbody").append(
-        `<tr><td>${cropText}</td><td><button class="btn btn-danger btn-sm deleteCropCode">Delete</button></td></tr>`
-      );
-      $(this).val(""); // Clear selection after adding
-    }
-  });
-
   // Load Staff Member IDs dynamically from the backend
   $.ajax({
     url: "http://localhost:5055/cropmonitoringcollector/api/v1/staffs/allStaffs",
     method: "GET",
     success: function (data) {
       if (data && Array.isArray(data)) {
-        console.log(data); // Log the full response for debugging
-
         data.forEach(function (staff) {
-          console.log(staff.staffMemberId, staff.firstName); // Inspect individual staff properties
-
-          // Use staffMemberId for the ID and staff.name for the name
-          const staffName = staff.firstName || "Unknown"; // Fallback to 'Unknown' if undefined
+          const staffName = staff.firstName || "Unknown";
           $("#staffMemberIdSelect").append(
             `<option value="${staff.staffMemberId}">${staff.staffMemberId} - ${staffName}</option>`
           );
@@ -106,13 +62,83 @@ $(document).ready(function () {
     },
   });
 
-  // Add Staff Code to table
+  // Load Monitoring Logs dynamically from the backend
+  $.ajax({
+    url: "http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/allMonitoringLogs",
+    method: "GET",
+    success: function (data) {
+      console.log(data); // Check if data is returned properly
+      if (data && Array.isArray(data)) {
+        data.forEach(function (log) {
+          const fieldCodes = log.fieldCodes.join(", ") || "No Field Codes";
+          const cropCodes = log.cropCodes.join(", ") || "No Crop Codes";
+          const staffMemberIds =
+            log.staffMemberIds.join(", ") || "No Staff Members";
+
+          // Ensure the image URL or base64 data is correctly formatted
+          const imagePreview = log.observedImage
+            ? `<img src="data:image/jpeg;base64,${log.observedImage}" alt="Image" width="100" />`
+            : "No Image";
+
+          // Append data to the monitoring logs table
+          $("#monitoringLogsTable tbody").append(
+            `<tr>
+              <td>${log.logCode || "No Log Code"}</td>
+              <td>${log.logDate || "No Date"}</td>
+              <td>${log.logObservation || "No Observation"}</td>
+              <td>${imagePreview}</td>
+              <td>${fieldCodes}</td>
+              <td>${cropCodes}</td>
+              <td>${staffMemberIds}</td>
+              <td>
+                <button class="btn btn-success view-btn"><i class="bi bi-eye"></i></button>
+                <button class="btn btn-primary edit-btn"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-danger delete-btn"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>`
+          );
+        });
+      } else {
+        console.error("Invalid data format received from the backend.");
+      }
+    },
+    error: function (error) {
+      console.error("Error loading monitoring logs:", error);
+    },
+  });
+
+  // Add selected Field Code to the table
+  $("#fieldCodesSelect").change(function () {
+    const fieldCode = $(this).val();
+    const fieldText = $("#fieldCodesSelect option:selected").text(); // Get the text of the selected option
+
+    if (fieldCode) {
+      $("#fieldCodesTable tbody").append(
+        `<tr><td>${fieldText}</td><td><button class="btn btn-danger btn-sm deleteFieldCode">Delete</button></td></tr>`
+      );
+      $(this).val(""); // Clear the select dropdown after adding
+    }
+  });
+
+  // Add selected Crop Code to the table
+  $("#cropCodesSelect").change(function () {
+    const cropCode = $(this).val();
+    const cropText = $("#cropCodesSelect option:selected").text(); // Get the text of the selected option
+    if (cropCode) {
+      $("#cropCodesTable tbody").append(
+        `<tr><td>${cropText}</td><td><button class="btn btn-danger btn-sm deleteCropCode">Delete</button></td></tr>`
+      );
+      $(this).val(""); // Clear selection after adding
+    }
+  });
+
+  // Add selected Staff Member ID to the table
   $("#staffMemberIdSelect").change(function () {
     const staffMemberId = $(this).val();
     const staffText = $("#staffMemberIdSelect option:selected").text(); // Get the text of the selected option
     if (staffMemberId) {
       $("#staffMemberIdTable tbody").append(
-        `<tr><td>${staffText}</td><td><button class="btn btn-danger btn-sm deleteEquipmentCode">Delete</button></td></tr>`
+        `<tr><td>${staffText}</td><td><button class="btn btn-danger btn-sm deleteStaffMemberId">Delete</button></td></tr>`
       );
       $(this).val(""); // Clear selection after adding
     }
@@ -128,8 +154,8 @@ $(document).ready(function () {
     $(this).closest("tr").remove();
   });
 
-  // Delete Equipment Code
-  $(document).on("click", ".deleteEquipmentCode", function () {
+  // Delete Staff Member ID
+  $(document).on("click", ".deleteStaffMemberId", function () {
     $(this).closest("tr").remove();
   });
 
@@ -146,32 +172,30 @@ $(document).ready(function () {
   });
 
   // Save Log Button
-  // Save Log Button
-  // Save Log Button
   $("#saveLogBtn").click(function () {
     const logObservation = $("#logObservation").val();
-  
+
     // Collect Field Codes
     const fieldCodes = [];
     $("#fieldCodesTable tbody tr").each(function () {
       const fieldCode = $(this).find("td").eq(0).text().split(" - ")[0];
       fieldCodes.push(fieldCode);
     });
-  
+
     // Collect Crop Codes
     const cropCodes = [];
     $("#cropCodesTable tbody tr").each(function () {
       const cropCode = $(this).find("td").eq(0).text().split(" - ")[0];
       cropCodes.push(cropCode);
     });
-  
+
     // Collect Staff Member IDs
     const staffMemberIds = [];
     $("#staffMemberIdTable tbody tr").each(function () {
       const staffId = $(this).find("td").eq(0).text().split(" - ")[0];
       staffMemberIds.push(staffId);
     });
-  
+
     // Validation: Ensure required data is present
     if (staffMemberIds.length === 0) {
       alert("Please select at least one staff member.");
@@ -181,25 +205,24 @@ $(document).ready(function () {
       alert("Please select at least one field code or crop code.");
       return;
     }
-  
+
     // Prepare FormData
     const logData = new FormData();
     logData.append("logObservation", logObservation);
-  
-    fieldCodes.forEach(code => logData.append("fieldCodes", code));
-    cropCodes.forEach(code => logData.append("cropCodes", code));
-    staffMemberIds.forEach(id => logData.append("staffMemberIds", id));
-  
+
+    fieldCodes.forEach((code) => logData.append("fieldCodes", code));
+    cropCodes.forEach((code) => logData.append("cropCodes", code));
+    staffMemberIds.forEach((id) => logData.append("staffMemberIds", id));
+
     // Check if an image is selected
     const file = $("#observedImage")[0].files[0];
     if (file) {
       logData.append("observedImage", file);
     }
-  
+
     // Send data to backend
     sendToBackend(logData);
   });
-  
 
   // Function to send Log Data to the backend
   function sendToBackend(logData) {
