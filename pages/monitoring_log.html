@@ -18,32 +18,37 @@
     <link rel="stylesheet" href="../styles/monitoring_log.css" />
   </head>
   <body>
-    <div class="container mt-5">
-      <h1 class="mb-4">Monitoring Logs</h1>
+    <h1 class="mb-4 text-center">Monitoring Logs</h1>
+    <div class="text-center">
       <button
         id="addLogBtn"
-        class="btn btn-primary mb-3"
+        class="btn btn-primary mb-3 moniBtn"
         data-bs-toggle="modal"
         data-bs-target="#logModal"
       >
         Add Log
       </button>
-      <table class="table table-bordered" id="monitoringLogsTable">
-        <!-- logsTable -->
-        <thead>
-          <tr>
-            <th>Log Code</th>
-            <th>Log Date</th>
-            <th>Observation</th>
-            <th>Image</th>
-            <th>Field Codes</th>
-            <th>Crop Codes</th>
-            <th>Staff MemberID</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    </div>
+
+    <div class="container mt-5">
+      <div class="table-container">
+        <table class="table table-bordered" id="monitoringLogsTable">
+          <!-- logsTable -->
+          <thead>
+            <tr>
+              <th>Log Code</th>
+              <th>Log Date</th>
+              <th>Observation</th>
+              <th>Image</th>
+              <th>Field Codes</th>
+              <th>Crop Codes</th>
+              <th>Staff MemberID</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Log Modal -->

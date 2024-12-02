@@ -1,17 +1,69 @@
 body {
-  background-color: #f0f2f5;
-  font-family: Arial, sans-serif;
-  background-image: url(../image/cro-imge/crop-3.jpg); /* Use the correct path to your image */
-  background-repeat: no-repeat; /* Prevent duplication */
-  background-size: cover; /* Ensure the image covers the entire page */
-  background-attachment: fixed; /* Keep the image fixed in place when scrolling */
-  background-position: center; /* Center the image */
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: url("../image/field-5.jpg") no-repeat center center/cover;
+  overflow: hidden;
 }
 
 .container {
   max-width: 1500px;
   margin: auto;
-  background: rgba(255, 255, 255, 0.8); /* Add a translucent white background to make content readable */
+  background: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border-radius: 8px;
+}
+#addLogBtn {
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+.table-container {
+  max-height: 721px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: linear-gradient(to right, #4caf50, #8bc34a);
+  color: white;
+  border-bottom: 2px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #e0f7fa;
+}
+
+tbody tr:hover {
+  background-color: #b2ebf2;
+  cursor: pointer;
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+tbody td:first-child {
+  font-weight: bold;
 }
