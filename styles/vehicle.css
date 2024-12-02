@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: url("../image/field-5.jpg") no-repeat center center/cover;
+  overflow: hidden;
+}
+/* Center the Title and Button */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+/* h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+} */
+.titleForm {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+/* .titleForm  h2 {
+  font-size: 5rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+} */
+
+h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.addVehicleBtn{
+
+  display: block;
+  margin: 0 auto 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+
+/* Scrollable Table Container */
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+/* Table Styling */
+#vehicleTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+#vehicleTable th,
+#vehicleTable td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+#vehicleTable thead th {
+  background-color: #343a40;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+#vehicleTable tbody tr:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+
+#vehicleTable tbody tr:hover {
+  background-color: #e9ecef;
+}
+.table-container {
+  max-height: 690px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 20px;
+}
