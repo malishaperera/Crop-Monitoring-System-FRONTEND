@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Meta tags for character encoding and viewport settings -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -29,6 +28,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
+
+    <div class="titleForm">
+      <h1>Field Mange Form</h1>
+    </div>
     <!-- Main content section -->
     <section class="p-3">
       <div class="row">
@@ -39,7 +42,7 @@
             data-bs-toggle="modal"
             data-bs-target="#fieldForm"
           >
-            New Field <i class="bi bi-people"></i>
+            New Field <i class="bi bi-lightbulb"></i>
             <!-- Icon inside button -->
           </button>
         </div>
@@ -47,7 +50,7 @@
 
       <div class="row">
         <!-- Table to display fields -->
-        <div class="col-12">
+        <div class="col-12 table-responsive"">
           <table
             class="table table-striped table-hover mt-3 text-center table-bordered"
           >

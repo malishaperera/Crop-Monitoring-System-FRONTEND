@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DashBoard</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-  />
-  <link rel="stylesheet" href="styles/slider.css" />
-
-</head>
-<body>
-    <div class="container">
-       <!-- sidebar.html -->
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./sidebar.css" />
+  </head>
+  <body>
+    <!-- sidebar.html -->
     <div class="sidebar" id="sidebar">
-
       <div>
-
         <div class="sidebar-header">
           <i class="fas fa-tree"></i><span>Green Shadow</span>
         </div>
 
         <div class="sidebar-links">
-
           <a href="" onclick="loadContent('dashboard')">
             <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
           </a>
@@ -43,7 +39,7 @@
             <i class="fas fa-users"></i><span>Staff</span>
           </a>
 
-          <a href="/pages/log_monitoring.html" onclick="loadContent('monitoring-log')">
+          <a href="pages/monitoring_log.html" onclick="loadContent('monitoring-log')">
             <i class="fas fa-book"></i><span>Monitoring Log</span>
           </a>
 
@@ -58,31 +54,20 @@
         </div>
       </div>
 
-
       <div class="sidebar-footer">
         <a href="#sign-out"
-          ><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a
-        >
+          ><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
       </div>
-
+      
     </div>
-
-
     <i
       class="fas fa-bars menu-icon"
       id="menu-icon"
-      aria-label="Toggle Sidebar">
-    </i>
-      
-    </div>
+      aria-label="Toggle Sidebar"
+    ></i>
 
-
-    
-
-    <!-- Bootstrap JS, Popper.js, and jQuery (Required for Bootstrap's JavaScript features) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="/crop.js"></script>
-</body>
+    <script src="./sidebarController.js"></script>
+  </body>
 </html>

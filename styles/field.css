@@ -1,27 +1,92 @@
+/* General body background */
 body {
-  background-image: url('../field-3.jpg');
-  background-size: cover; /* This makes sure the background image covers the entire page */
-  background-position: center; /* Centers the background image */
-  background-attachment: fixed; /* Keeps the background image fixed when scrolling */
+  background-image: url("../image/field-1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   display: block;
   overflow: hidden;
+  font-family: "Arial", sans-serif;
 }
 
-table tr td{
-  vertical-align: middle;
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-td button{
-  margin: 5px;
+/* Table Header */
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, #007bff, #6610f2);
+  color: #fff;
+  text-transform: uppercase;
+  border-bottom: 2px solid #004cbf;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-td button i{
-  font-size: 20px;
+thead th {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.modal-header{
+/* Table Body */
+tbody {
+  background-color: #f7f7f9;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #e6f7ff;
+  transition: background-color 0.3s ease;
+}
+
+tbody td {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Action buttons */
+tbody td button {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+tbody td button:hover {
+  background-color: #0056b3;
+}
+
+tbody td button i {
+  font-size: 18px;
+}
+
+/* Modal Styling */
+.modal-header {
   background: #0d6efd;
   color: #fff;
+  padding: 15px;
 }
 
 .modal-body form {
@@ -31,14 +96,13 @@ td button i{
   padding: 0;
 }
 
-
-.cardImage{
+.cardImage {
   display: grid;
-  flex-direction: row;
   gap: 10px;
   margin-right: 14px;
 }
-.modal-body form .imgholder{
+
+.modal-body form .imgholder {
   width: 200px;
   height: 200px;
   position: relative;
@@ -46,39 +110,43 @@ td button i{
   overflow: hidden;
 }
 
-.imgholder .upload{
+.imgholder .upload {
   position: absolute;
   bottom: 0;
   left: 10;
   width: 100%;
   height: 100px;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   display: none;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
 
-.upload i{
+.p-3 {
+  padding: 8rem !important;
+}
+
+.upload i {
   color: #fff;
   font-size: 35px;
 }
 
-.imgholder:hover .upload{
+.imgholder:hover .upload {
   display: flex;
 }
 
-.imgholder .upload input{
+.imgholder .upload input {
   display: none;
 }
 
-.modal-body form .inputField{
+.modal-body form .inputField {
   flex-basis: 68%;
   border-left: 5px groove blue;
   padding-left: 20px;
 }
 
-form .inputField > div{
+form .inputField > div {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -86,17 +154,17 @@ form .inputField > div{
   margin-bottom: 20px;
 }
 
-form .inputField > div label{
+form .inputField > div label {
   font-size: 20px;
   font-weight: 500;
 }
 
-#fieldForm form .inputField > div label::after{
+#fieldForm form .inputField > div label::after {
   content: "*";
   color: red;
 }
 
-form .inputField > div input{
+form .inputField > div input {
   width: 75%;
   padding: 10px;
   border: none;
@@ -105,11 +173,114 @@ form .inputField > div input{
   border-bottom: 2px solid blue;
 }
 
-.modal-footer .submit{
+/* Submit button */
+.modal-footer .submit {
   font-size: 18px;
 }
 
-#readData form .inputField > div input{
+/* Read-only data */
+#readData form .inputField > div input {
   color: #000;
   font-size: 18px;
+}
+
+/* Table responsive wrapper */
+.table-responsive {
+  overflow-y: auto;
+  max-height: 800px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  table {
+    font-size: 14px;
+  }
+
+  tbody td,
+  thead th {
+    padding: 10px;
+  }
+
+  tbody td button {
+    padding: 5px 8px;
+  }
+}
+
+/* Add Field Button Styling */
+.newField {
+  position: relative;
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.newField i {
+  margin-left: 8px;
+  font-size: 20px;
+}
+
+/* Glow effect */
+.newField::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+}
+
+.newField:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.6);
+}
+
+.newField:hover::before {
+  width: 200px;
+  height: 200px;
+  opacity: 1;
+}
+
+.newField:focus {
+  outline: none;
+  box-shadow: 0 0 15px rgba(13, 110, 253, 0.8);
+}
+.p-3 {
+  padding: 4rem !important;
+}
+
+.titleForm {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.titleForm h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+.col-12 {
+  flex: 14 0 auto;
+  width: 100%;
+  position: relative;
+  top: -55px;
 }

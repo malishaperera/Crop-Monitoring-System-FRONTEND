@@ -4,15 +4,15 @@ $(document).ready(function () {
 
   // Function to show the stored data in the table
   function showInfo() {
-    $("#data").empty(); // Clear the table body
-    $("#loadingSpinner").show(); // Show loading spinner
+    $("#data").empty();
+    $("#loadingSpinner").show();
 
     $.ajax({
       url: "http://localhost:5055/cropmonitoringcollector/api/v1/fields/allFields",
       type: "GET",
       dataType: "json",
       success: function (response) {
-        $("#loadingSpinner").hide(); // Hide loading spinner
+        $("#loadingSpinner").hide();
         response.forEach(function (field) {
           $("#data").append(
             `<tr class="fieldDetails">
@@ -85,18 +85,49 @@ $(document).ready(function () {
   }
 
   // Handle form submission (add/edit)
-  // Handle form submission (add/edit)
   $(".submit").click(function (e) {
     e.preventDefault();
-  
-    let formData = new FormData();
-    formData.append("fieldName", $("#fieldName").val());
-    formData.append("fieldLocation", $("#fieldLocation").val());
-    formData.append("fieldSize", $("#fieldSize").val());
-  
+
+    // Validation for required fields
+    const fieldName = $("#fieldName").val().trim();
+    const fieldLocation = $("#fieldLocation").val().trim();
+    const fieldSize = $("#fieldSize").val().trim();
     const imgInput1 = document.getElementById("imgInput1").files[0];
     const imgInput2 = document.getElementById("imgInput2").files[0];
-  
+    let valid = true;
+
+    // Check if fieldName is filled
+    if (!fieldName) {
+      alert("Field Name is required.");
+      valid = false;
+    }
+
+    // Check if fieldLocation is filled
+    if (!fieldLocation) {
+      alert("Field Location is required.");
+      valid = false;
+    }
+
+    // Check if fieldSize is filled
+    if (!fieldSize) {
+      alert("Field Size is required.");
+      valid = false;
+    }
+
+    // Check if at least one image is uploaded or available
+    if (!imgInput1 && !imgInput2) {
+      alert("At least one image is required.");
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    // Proceed with form submission if all validations pass
+    let formData = new FormData();
+    formData.append("fieldName", fieldName);
+    formData.append("fieldLocation", fieldLocation);
+    formData.append("fieldSize", fieldSize);
+
     // Handle first image
     if (imgInput1) {
       // If a new image is uploaded
@@ -109,7 +140,7 @@ $(document).ready(function () {
         formData.append("fieldImage1", img1Data.split(",")[1]);
       }
     }
-  
+
     // Handle second image
     if (imgInput2) {
       // If a new image is uploaded
@@ -122,18 +153,18 @@ $(document).ready(function () {
         formData.append("fieldImage2", img2Data.split(",")[1]);
       }
     }
-  
+
     // Log form data (for debugging purposes)
     for (let pair of formData.entries()) {
       console.log(pair[0] + ": " + pair[1]);
     }
-  
+
     // Determine whether to update or create new entry
     const requestType = isEdit ? "PATCH" : "POST";
     const url = isEdit
       ? `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${editId}`
       : "http://localhost:5055/cropmonitoringcollector/api/v1/fields";
-  
+
     $.ajax({
       url: url,
       type: requestType,
@@ -149,7 +180,7 @@ $(document).ready(function () {
           alert(isEdit ? "Field updated successfully!" : "Field saved successfully!");
           $("#fieldForm").modal("hide");
           $("#myForm")[0].reset();
-          showInfo(); // Refresh the table
+          showInfo();
         } else {
           alert("Unexpected response. Please try again.");
         }
@@ -161,129 +192,98 @@ $(document).ready(function () {
       },
     });
   });
-  
+
   // View field details
-  // View field details
-$(document).on("click", ".view-btn", function () {
-  const fieldId = $(this).data("id"); // Get field ID from the button's data attribute
-
-  // Fetch field details via AJAX
-  $.ajax({
-    url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${fieldId}`,
-    type: "GET",
-    dataType: "json",
-    success: function (response) {
-      // Populate the modal with field details
-      $("#viewFieldName").val(response.fieldName);
-      $("#viewFieldLocation").val(`${response.fieldLocation.x}, ${response.fieldLocation.y}`);
-      $("#viewFieldSize").val(response.fieldSize);
-      $("#viewImg1").attr("src", `data:image/jpeg;base64,${response.fieldImage1}`);
-      $("#viewImg2").attr("src", `data:image/jpeg;base64,${response.fieldImage2}`);
-
-      // Populate related entities
-      populateList("#viewCropCodes", response.cropCodes);
-      populateList("#viewEquipmentIds", response.equipmentIds);
-      populateList("#viewStaffMemberIds", response.staffMemberIds);
-      populateList("#viewLogCodes", response.logCodes);
-
-      // Show the view modal
-      $("#viewFieldModal").modal("show");
-    },
-    error: function (xhr, status, error) {
-      alert("Failed to load field details.");
-      console.error("Error fetching field:", error);
-    },
-  });
-});
-
-// Helper function to populate lists in the modal
-function populateList(selector, items) {
-  const listElement = $(selector);
-  listElement.empty();
-  if (items && items.length > 0) {
-    items.forEach(item => {
-      listElement.append(`<li class="list-group-item">${item}</li>`);
-    });
-  } else {
-    listElement.append(`<li class="list-group-item text-muted">No data available</li>`);
-  }
-}
-
-  
-  // Helper function to populate lists
-  // function populateList(selector, items) {
-  //   const listElement = $(selector);
-  //   listElement.empty();
-  //   if (items && items.length > 0) {
-  //     items.forEach(item => {
-  //       listElement.append(`<li>${item}</li>`);
-  //     });
-  //   } else {
-  //     listElement.append("<li>No data available</li>");
-  //   }
-  // }
-  
-
-  
-  // Edit field details
-  $(document).on("click", ".edit-btn", function () {
+  $(document).on("click", ".view-btn", function () {
     const fieldId = $(this).data("id");
+
+    // Fetch field details via AJAX
     $.ajax({
       url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${fieldId}`,
       type: "GET",
       dataType: "json",
       success: function (response) {
-        $("#fieldName").val(response.fieldName);
-        $("#fieldLocation").val(
-          `${response.fieldLocation.x}, ${response.fieldLocation.y}`
-        );
-        $("#fieldSize").val(response.fieldSize);
-        $("#imgPreview1").attr(
-          "src",
-          `data:image/jpeg;base64,${response.fieldImage1}`
-        );
-        $("#imgPreview2").attr(
-          "src",
-          `data:image/jpeg;base64,${response.fieldImage2}`
-        );
+        // Populate the modal with field details
+        $("#viewFieldName").val(response.fieldName);
+        $("#viewFieldLocation").val(`${response.fieldLocation.x}, ${response.fieldLocation.y}`);
+        $("#viewFieldSize").val(response.fieldSize);
+        $("#viewImg1").attr("src", `data:image/jpeg;base64,${response.fieldImage1}`);
+        $("#viewImg2").attr("src", `data:image/jpeg;base64,${response.fieldImage2}`);
 
-        // Ensure fields are editable
-        $("#fieldLocation").prop("disabled", false); // Enable fieldLocation
-        $("#fieldSize").prop("disabled", false); // Enable fieldSize
+        // Populate related entities
+        populateList("#viewCropCodes", response.cropCodes);
+        populateList("#viewEquipmentIds", response.equipmentIds);
+        populateList("#viewStaffMemberIds", response.staffMemberIds);
+        populateList("#viewLogCodes", response.logCodes);
 
-        isEdit = true;
-        editId = fieldId;
-        $(".submit").text("Update");
-        $(".modal-title").text("Edit the Form");
-        $("#fieldForm").modal("show");
+        // Show the view modal
+        $("#viewFieldModal").modal("show");
       },
       error: function (xhr, status, error) {
-        alert("Failed to load field details for editing.");
+        alert("Failed to load field details.");
         console.error("Error fetching field:", error);
       },
     });
   });
 
-  // Delete field
+  // Helper function to populate lists in the modal
+  function populateList(selector, items) {
+    const listElement = $(selector);
+    listElement.empty();
+    if (items && items.length > 0) {
+      items.forEach(item => {
+        listElement.append(`<li>${item}</li>`);
+      });
+    } else {
+      listElement.append("<li>No data available</li>");
+    }
+  }
+
+  // Handle edit button click
+  $(document).on("click", ".edit-btn", function () {
+    isEdit = true;
+    editId = $(this).data("id");
+
+    // Fetch field data for editing
+    $.ajax({
+      url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${editId}`,
+      type: "GET",
+      dataType: "json",
+      success: function (response) {
+        // Pre-fill form for editing
+        $("#fieldName").val(response.fieldName);
+        $("#fieldLocation").val(`${response.fieldLocation.x}, ${response.fieldLocation.y}`);
+        $("#fieldSize").val(response.fieldSize);
+        $("#imgPreview1").attr("src", `data:image/jpeg;base64,${response.fieldImage1}`);
+        $("#imgPreview2").attr("src", `data:image/jpeg;base64,${response.fieldImage2}`);
+        $(".submit").text("Update");
+        $(".modal-title").text("Edit Field");
+        $("#fieldForm").modal("show");
+      },
+      error: function (xhr, status, error) {
+        alert("Failed to fetch field data for editing.");
+        console.error("Error fetching field data:", error);
+      },
+    });
+  });
+
+  // Handle delete button click
   $(document).on("click", ".delete-btn", function () {
     const fieldId = $(this).data("id");
     if (confirm("Are you sure you want to delete this field?")) {
       $.ajax({
         url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${fieldId}`,
         type: "DELETE",
-        success: function (response) {
+        success: function () {
           alert("Field deleted successfully!");
-          showInfo(); // Refresh the table
+          showInfo();
         },
-        error: function (xhr, status, error) {
+        error: function () {
           alert("Failed to delete the field. Please try again.");
-          console.error("Error:", error);
-          console.error("Status:", status);
         },
       });
     }
   });
 
-  // On page load, fetch and display all fields
   showInfo();
 });
