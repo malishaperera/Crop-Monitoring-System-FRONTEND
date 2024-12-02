@@ -1,154 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Equipment Page</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/equipment.css">
-</head>
-<body>
-<div class="container mt-5">
-    <!-- Equipment Management Title -->
-    <h2 class="mb-4">Equipment Management</h2>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/equipment.css" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <!-- Equipment Management Title -->
+      <h2 class="mb-4">Equipment Management</h2>
 
-    <!-- Add New Equipment Button -->
-    <button class="btn btn-primary mb-3 btn-sm" data-bs-toggle="modal" data-bs-target="#addEquipmentModal">
+      <!-- Add New Equipment Button -->
+      <button
+        class="btn btn-primary mb-3 btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#addEquipmentModal"
+      >
         Add New Equipment
-    </button>
+      </button>
 
-    <!-- Equipment Cards Container -->
-    <div class="row row-cols-1 row-cols-md-3 g-4" id="equipment-cards-container">
+      <!-- Equipment Cards Container -->
+      <div
+        class="row row-cols-1 row-cols-md-3 g-4"
+        id="equipment-cards-container"
+      >
         <!-- Equipment cards will be dynamically added here -->
+      </div>
     </div>
-</div>
 
-<!-- Modal for Adding New Equipment -->
-<div class="modal fade" id="addEquipmentModal" tabindex="-1" aria-labelledby="addEquipmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <!-- Modal for Adding New Equipment -->
+    <div
+      class="modal fade"
+      id="addEquipmentModal"
+      tabindex="-1"
+      aria-labelledby="addEquipmentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addEquipmentModalLabel">Add New Equipment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="equipmentForm">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="equipmentType" class="form-label">Equipment Type</label>
-                        <select class="form-select" id="equipmentType" required>
-                            <option value="MECHANICAL">Mechanical</option>
-                            <option value="ELECTRICAL">Electrical</option>
-                            <option value="HYDRAULIC">Hydraulic</option>
-                        </select>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status" required>
-                            <option value="AVAILABLE">Available</option>
-                            <option value="UNAVAILABLE">Unavailable</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="fieldCode" class="form-label">Field Code</label>
-                        <select class="form-select" id="fieldCode" required>
-                            <!-- Options will be dynamically loaded here -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="staffMemberId" class="form-label">Staff Member ID</label>
-                        <select class="form-select" id="staffMemberId" required>
-                            <!-- Options will be dynamically loaded here -->
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary w-100">Add Equipment</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+          <div class="modal-header">
+            <h5 class="modal-title" id="addEquipmentModalLabel">
+              Add New Equipment
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="equipmentForm">
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" required />
+              </div>
+              <div class="mb-3">
+                <label for="equipmentType" class="form-label"
+                  >Equipment Type</label
+                >
+                <select class="form-select" id="equipmentType" required>
+                  <option value="MECHANICAL">Mechanical</option>
+                  <option value="ELECTRICAL">Electrical</option>
+                  <option value="HYDRAULIC">Hydraulic</option>
+                </select>
+              </div>
 
-<!-- Modal for Viewing Equipment Details -->
-<div class="modal fade" id="viewEquipmentModal" tabindex="-1" aria-labelledby="viewEquipmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+              <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" required>
+                  <option value="AVAILABLE">Available</option>
+                  <option value="UNAVAILABLE">Unavailable</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="fieldCode" class="form-label">Field Code</label>
+                <select class="form-select" id="fieldCode" required>
+                  <!-- Options will be dynamically loaded here -->
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="staffMemberId" class="form-label"
+                  >Staff Member ID</label
+                >
+                <select class="form-select" id="staffMemberId" required>
+                  <!-- Options will be dynamically loaded here -->
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">
+                Add Equipment
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Viewing Equipment Details -->
+    <div
+      class="modal fade"
+      id="viewEquipmentModal"
+      tabindex="-1"
+      aria-labelledby="viewEquipmentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewEquipmentModalLabel">View Equipment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewEquipmentModalLabel">
+              View Equipment
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Equipment Details -->
+            <div id="viewEquipmentDetails">
+              <!-- Content will be dynamically populated -->
             </div>
-            <div class="modal-body">
-                <!-- Equipment Details -->
-                <div id="viewEquipmentDetails">
-                    <!-- Content will be dynamically populated -->
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- Modal for Editing Equipment -->
-<div class="modal fade" id="editEquipmentModal" tabindex="-1" aria-labelledby="editEquipmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <!-- Modal for Editing Equipment -->
+    <div
+      class="modal fade"
+      id="editEquipmentModal"
+      tabindex="-1"
+      aria-labelledby="editEquipmentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editEquipmentModalLabel">Edit Equipment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editEquipmentForm">
-                    <div class="mb-3">
-                        <label for="editName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="editName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editEquipmentType" class="form-label">Equipment Type</label>
-                        <select class="form-select" id="editEquipmentType" required>
-                            <option value="MECHANICAL">Mechanical</option>
-                            <option value="ELECTRICAL">Electrical</option>
-                            <option value="HYDRAULIC">Hydraulic</option>
-                        </select>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="editStatus" class="form-label">Status</label>
-                        <select class="form-select" id="editStatus" required>
-                            <option value="AVAILABLE">Available</option>
-                            <option value="UNAVAILABLE">Unavailable</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editFieldCode" class="form-label">Field Code</label>
-                        <select class="form-select" id="editFieldCode" required>
-                            <!-- Options will be dynamically loaded here -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editStaffMemberId" class="form-label">Staff Member ID</label>
-                        <select class="form-select" id="editStaffMemberId" required>
-                            <!-- Options will be dynamically loaded here -->
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary w-100">Update Equipment</button>
-                </form>
-            </div>
+          <div class="modal-header">
+            <h5 class="modal-title" id="editEquipmentModalLabel">
+              Edit Equipment
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editEquipmentForm">
+              <div class="mb-3">
+                <label for="editName" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editEquipmentType" class="form-label"
+                  >Equipment Type</label
+                >
+                <select class="form-select" id="editEquipmentType" required>
+                  <option value="MECHANICAL">Mechanical</option>
+                  <option value="ELECTRICAL">Electrical</option>
+                  <option value="HYDRAULIC">Hydraulic</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="editStatus" class="form-label">Status</label>
+                <select class="form-select" id="editStatus" required>
+                  <option value="AVAILABLE">Available</option>
+                  <option value="UNAVAILABLE">Unavailable</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editFieldCode" class="form-label">Field Code</label>
+                <select class="form-select" id="editFieldCode" required>
+                  <!-- Options will be dynamically loaded here -->
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editStaffMemberId" class="form-label"
+                  >Staff Member ID</label
+                >
+                <select class="form-select" id="editStaffMemberId" required>
+                  <!-- Options will be dynamically loaded here -->
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">
+                Update Equipment
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-</div>
-
-<!-- Bootstrap JS and jQuery -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../scripts/equipment.js"></script>
-</body>
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../scripts/equipment.js"></script>
+  </body>
 </html>

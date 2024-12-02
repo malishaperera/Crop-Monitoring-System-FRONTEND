@@ -18,19 +18,19 @@
   </head>
 
   <body>
-    <div class="container mt-5">
+    <div class="titleForm">
       <!-- Staff Management Title -->
-      <h2 class="mb-4">Staff Management</h2>
+      <h2>Staff Management</h2>
 
       <!-- Add New Staff Button -->
-      <button
-        class="btn btn-primary mb-3 btn-sm"
-        data-bs-toggle="modal"
-        data-bs-target="#addStaffModal"
-      >
+      <button class= "btn btn-primary mb-3 btn-sm  addNewStaffBtn"data-bs-toggle="modal"data-bs-target="#addStaffModal" >
         Add New Staff
       </button>
+    </div>
 
+    <!-- <div class="container mt-5"> -->
+
+    <div class="container scrollable-container">
       <!-- Staff Cards Container -->
       <div class="row row-cols-1 row-cols-md-3 g-4" id="staff-cards-container">
         <!-- Staff cards will be dynamically added here -->
@@ -93,8 +93,8 @@
                 <input type="text" class="form-control" id="role" required />
               </div>
               <div class="mb-3">
-                <label for="gender" class="form-label" >Gender</label>
-                <select class="form-select" id="gender"  required>
+                <label for="gender" class="form-label">Gender</label>
+                <select class="form-select" id="gender" required>
                   <option value="Male">MALE</option>
                   <option value="Female">FEMALE</option>
                   <option value="Other">Other</option>
