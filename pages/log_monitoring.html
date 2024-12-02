@@ -14,6 +14,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
     />
+
+    <link rel="stylesheet" href="../styles/log_monitorng.css" />
   </head>
   <body>
     <div class="container mt-5">
@@ -130,8 +132,8 @@
 
               <div class="mb-3">
                 <label for="staffMemberId" class="form-label"
-                  >Staff MemberID </label
-                >
+                  >Staff MemberID
+                </label>
                 <select id="staffMemberIdSelect" class="form-select">
                   <option value="">Select Staff</option>
                   <!-- <option value="E1">STAFF-012</option>
@@ -151,7 +153,6 @@
                   <tbody></tbody>
                 </table>
               </div>
-
             </form>
           </div>
           <div class="modal-footer">
@@ -164,6 +165,79 @@
             </button>
             <button type="button" id="saveLogBtn" class="btn btn-success">
               Save Log
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for viewing log details -->
+    <div
+      class="modal fade"
+      id="logViewModal"
+      tabindex="-1"
+      aria-labelledby="logViewModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="logViewModalLabel">
+              Monitoring Log Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Log Code -->
+            <p><strong>Log Code:</strong> <span id="logCodeView"></span></p>
+            <!-- Log Date -->
+            <p><strong>Log Date:</strong> <span id="logDateView"></span></p>
+            <!-- Log Observation -->
+            <p>
+              <strong>Observation:</strong>
+              <span id="logObservationView"></span>
+            </p>
+
+            <!-- Field Codes Table -->
+            <h5>Field Codes:</h5>
+            <table class="table" id="fieldCodesViewTable">
+              <tbody></tbody>
+            </table>
+
+            <!-- Crop Codes Table -->
+            <h5>Crop Codes:</h5>
+            <table class="table" id="cropCodesViewTable">
+              <tbody></tbody>
+            </table>
+
+            <!-- Staff Member IDs Table -->
+            <h5>Staff Member IDs:</h5>
+            <table class="table" id="staffMemberIdViewTable">
+              <tbody></tbody>
+            </table>
+
+            <!-- Image Preview -->
+            <h5>Image:</h5>
+            <img
+              id="imagePreviewView"
+              src=""
+              alt="Image Preview"
+              width="200"
+              style="display: none"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
             </button>
           </div>
         </div>

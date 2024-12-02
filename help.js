@@ -8,7 +8,7 @@ $(document).ready(function () {
         data.forEach(function (field) {
           const fieldName = field.name || field.fieldName || "Unknown";
           $("#fieldCodesSelect").append(
-            `<option value="${field.fieldCode}">${field.fieldCode} - ${fieldName}</option>`
+            <option value="${field.fieldCode}">${field.fieldCode} - ${fieldName}</option>
           );
         });
       } else {
@@ -29,7 +29,7 @@ $(document).ready(function () {
         data.forEach(function (crop) {
           const cropName = crop.cropCommonName || "Unknown";
           $("#cropCodesSelect").append(
-            `<option value="${crop.cropCode}">${crop.cropCode} - ${cropName}</option>`
+            <option value="${crop.cropCode}">${crop.cropCode} - ${cropName}</option>
           );
         });
       } else {
@@ -50,7 +50,7 @@ $(document).ready(function () {
         data.forEach(function (staff) {
           const staffName = staff.firstName || "Unknown";
           $("#staffMemberIdSelect").append(
-            `<option value="${staff.staffMemberId}">${staff.staffMemberId} - ${staffName}</option>`
+            <option value="${staff.staffMemberId}">${staff.staffMemberId} - ${staffName}</option>
           );
         });
       } else {
@@ -77,12 +77,12 @@ $(document).ready(function () {
 
           // Ensure the image URL or base64 data is correctly formatted
           const imagePreview = log.observedImage
-            ? `<img src="data:image/jpeg;base64,${log.observedImage}" alt="Image" width="100" />`
+            ? <img src="data:image/jpeg;base64,${log.observedImage}" alt="Image" width="100" />
             : "No Image";
 
           // Append data to the monitoring logs table
           $("#monitoringLogsTable tbody").append(
-            `<tr data-log-code="${log.logCode}">
+            <tr data-log-code="${log.logCode}">
               <td>${log.logCode || "No Log Code"}</td>
               <td>${log.logDate || "No Date"}</td>
               <td>${log.logObservation || "No Observation"}</td>
@@ -95,7 +95,7 @@ $(document).ready(function () {
                 <button class="btn btn-primary edit-btn"><i class="bi bi-pencil-square"></i></button>
                 <button class="btn btn-danger delete-btn"><i class="bi bi-trash"></i></button>
               </td>
-            </tr>`
+            </tr>
           );
         });
       } else {
@@ -107,119 +107,122 @@ $(document).ready(function () {
     },
   });
 
-  // --------------------------------------------start----------------------------------------------------
+  $(document).ready(function () {
+    // Handle Edit Button Click
+    $(document).on("click", ".edit-btn", function () {
+      const row = $(this).closest("tr");
+      const logCode = row.data("log-code");
 
-  // Edit Monitoring Log
-  $(document).on("click", ".edit-btn", function () {
-    const row = $(this).closest("tr");
-    const logCode = row.data("log-code");
+      // Fetch the details from the selected row
+      const logDate = row.find("td:eq(1)").text();
+      const logObservation = row.find("td:eq(2)").text();
+      const fieldCodes = row.find("td:eq(4)").text().split(", ");
+      const cropCodes = row.find("td:eq(5)").text().split(", ");
+      const staffMemberIds = row.find("td:eq(6)").text().split(", ");
 
-    // Retrieve the observed image from the row (column 3 in this case)
-    const observedImage = row.find("td:eq(3)").find("img").attr("src");
+      // Populate the modal form fields
+      $("#logModalLabel").text("Edit Log"); // Change modal title
+      $("#logObservation").val(logObservation);
 
-    // If observedImage exists, show it in the modal
-    if (observedImage) {
-      $("#imagePreview").attr("src", observedImage).show(); // Show image in modal
-    } else {
-      $("#imagePreview").hide(); // Hide image preview if no image
-    }
-
-    // Populate other fields (log observation, field codes, crop codes, etc.)
-    const logObservation = row.find("td:eq(2)").text();
-    const fieldCodes = row.find("td:eq(4)").text().split(", ");
-    const cropCodes = row.find("td:eq(5)").text().split(", ");
-    const staffMemberIds = row.find("td:eq(6)").text().split(", ");
-
-    $("#logObservation").val(logObservation);
-    populateTable("#fieldCodesTable", fieldCodes);
-    populateTable("#cropCodesTable", cropCodes);
-    populateTable("#staffMemberIdTable", staffMemberIds);
-
-    // Show the modal
-    $("#logModal").modal("show");
-
-    // Handle the save button click to update the log
-    $("#saveLogBtn")
-      .off("click")
-      .on("click", function () {
-        updateLog(logCode, observedImage); // Pass the current image URL to the update function
+      // Populate Field Codes table
+      $("#fieldCodesTable tbody").empty();
+      fieldCodes.forEach((code) => {
+        $("#fieldCodesTable tbody").append(
+          <tr><td>${code}</td><td><button class="btn btn-danger btn-sm deleteFieldCode">Delete</button></td></tr>
+        );
       });
+
+      // Populate Crop Codes table
+      $("#cropCodesTable tbody").empty();
+      cropCodes.forEach((code) => {
+        $("#cropCodesTable tbody").append(
+          <tr><td>${code}</td><td><button class="btn btn-danger btn-sm deleteCropCode">Delete</button></td></tr>
+        );
+      });
+
+      // Populate Staff Member IDs table
+      $("#staffMemberIdTable tbody").empty();
+      staffMemberIds.forEach((id) => {
+        $("#staffMemberIdTable tbody").append(
+          <tr><td>${id}</td><td><button class="btn btn-danger btn-sm deleteStaffMemberId">Delete</button></td></tr>
+        );
+      });
+
+      // Show the modal
+      $("#logModal").modal("show");
+
+      // Bind Save Changes button for Update
+      $("#saveLogBtn")
+        .off("click")
+        .on("click", function () {
+          updateLog(logCode);
+        });
+    });
+
+    // Function to send updated log to the backend
+    function updateLog(logCode) {
+      const logObservation = $("#logObservation").val();
+
+      // Collect Field Codes
+      const fieldCodes = [];
+      $("#fieldCodesTable tbody tr").each(function () {
+        const fieldCode = $(this).find("td").eq(0).text();
+        fieldCodes.push(fieldCode);
+      });
+
+      // Collect Crop Codes
+      const cropCodes = [];
+      $("#cropCodesTable tbody tr").each(function () {
+        const cropCode = $(this).find("td").eq(0).text();
+        cropCodes.push(cropCode);
+      });
+
+      // Collect Staff Member IDs
+      const staffMemberIds = [];
+      $("#staffMemberIdTable tbody tr").each(function () {
+        const staffId = $(this).find("td").eq(0).text();
+        staffMemberIds.push(staffId);
+      });
+
+      // Prepare FormData for the PATCH request
+      const logData = new FormData();
+      logData.append("logObservation", logObservation);
+      fieldCodes.forEach((code) => logData.append("fieldCodes", code));
+      cropCodes.forEach((code) => logData.append("cropCodes", code));
+      staffMemberIds.forEach((id) => logData.append("staffMemberIds", id));
+
+      // Check if an image is selected
+      const file = $("#observedImage")[0].files[0];
+      if (file) {
+        logData.append("observedImage", file);
+      }
+
+      // Send the PATCH request to the backend
+      fetch(
+        http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/${logCode},
+        {
+          method: "PATCH",
+          body: logData, // Send the updated data
+        }
+      )
+        .then((response) => {
+          if (response.ok) {
+            alert("Log updated successfully!");
+            $("#logModal").modal("hide");
+            location.reload(); // Refresh the page to reflect changes
+          } else {
+            alert("Failed to update the log. Please try again.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating log:", error);
+          alert("Error occurred while updating the log.");
+        });
+    }
   });
 
-  // Populate table with data
-  function populateTable(tableId, data) {
-    $(tableId + " tbody").empty();
-    data.forEach(function (item) {
-      $(tableId + " tbody").append(
-        `<tr><td>${item}</td><td><button class="btn btn-danger btn-sm deleteFieldCode">Delete</button></td></tr>`
-      );
-    });
-  }
 
-  // Save updated log
-  // Save updated log
-  function updateLog(logCode, observedImage) {
-    const logObservation = $("#logObservation").val();
-    const fieldCodes = collectTableData("#fieldCodesTable");
-    const cropCodes = collectTableData("#cropCodesTable");
-    const staffMemberIds = collectTableData("#staffMemberIdTable");
-
-    // Prepare FormData
-    const logData = new FormData();
-    logData.append("logObservation", logObservation);
-    fieldCodes.forEach((code) => logData.append("fieldCodes", code));
-    cropCodes.forEach((code) => logData.append("cropCodes", code));
-    staffMemberIds.forEach((id) => logData.append("staffMemberIds", id));
-
-    // Check if a new image is uploaded
-    const newImage = $("#observedImage")[0].files[0];
-    if (newImage) {
-      logData.append("observedImage", newImage); // Append new image
-      console.log("New Image uploaded:", newImage);
-    } else {
-      // If no new image is uploaded, check the observedImage passed
-      if (observedImage && observedImage !== "") {
-        console.log("Using existing image:", observedImage);
-        logData.append("observedImage", observedImage); // Send the existing image URL (base64 or URL)
-      } else {
-        console.log("No image available, sending empty string.");
-        logData.append("observedImage", ""); // Send an empty string if no image exists
-      }
-    }
-
-    // Send the PATCH request to the backend
-    fetch(
-      `http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/${logCode}`,
-      {
-        method: "PATCH",
-        body: logData,
-      }
-    )
-      .then((response) => {
-        if (response.ok) {
-          alert("Log updated successfully!");
-          $("#logModal").modal("hide");
-          location.reload(); // Refresh the page to reflect changes
-        } else {
-          alert("Failed to update the log. Please try again.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating log:", error);
-        alert("Error occurred while updating the log.");
-      });
-  }
-
-  // Function to collect table data
-  function collectTableData(tableId) {
-    const data = [];
-    $(tableId + " tbody tr").each(function () {
-      data.push($(this).find("td").eq(0).text());
-    });
-    return data;
-  }
-
-  // --------------------------------------------end----------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
 
   // Delete Monitoring Log
   $(document).on("click", ".delete-btn", function () {
@@ -234,13 +237,13 @@ $(document).ready(function () {
 
       // Delete the log entry from the backend
       $.ajax({
-        url: `http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/${logCode}`,
+        url: http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/${logCode},
         method: "DELETE",
         success: function () {
-          console.log(`Log ${logCode} deleted successfully.`);
+          console.log(Log ${logCode} deleted successfully.);
         },
         error: function (error) {
-          console.error(`Failed to delete log ${logCode}:`, error);
+          console.error(Failed to delete log ${logCode}:, error);
           alert("Error deleting the log. Please try again.");
         },
       });
@@ -256,7 +259,7 @@ $(document).ready(function () {
 
     if (fieldCode) {
       $("#fieldCodesTable tbody").append(
-        `<tr><td>${fieldText}</td><td><button class="btn btn-danger btn-sm deleteFieldCode">Delete</button></td></tr>`
+        <tr><td>${fieldText}</td><td><button class="btn btn-danger btn-sm deleteFieldCode">Delete</button></td></tr>
       );
       $(this).val(""); // Clear the select dropdown after adding
     }
@@ -268,7 +271,7 @@ $(document).ready(function () {
     const cropText = $("#cropCodesSelect option:selected").text(); // Get the text of the selected option
     if (cropCode) {
       $("#cropCodesTable tbody").append(
-        `<tr><td>${cropText}</td><td><button class="btn btn-danger btn-sm deleteCropCode">Delete</button></td></tr>`
+        <tr><td>${cropText}</td><td><button class="btn btn-danger btn-sm deleteCropCode">Delete</button></td></tr>
       );
       $(this).val(""); // Clear selection after adding
     }
@@ -280,7 +283,7 @@ $(document).ready(function () {
     const staffText = $("#staffMemberIdSelect option:selected").text(); // Get the text of the selected option
     if (staffMemberId) {
       $("#staffMemberIdTable tbody").append(
-        `<tr><td>${staffText}</td><td><button class="btn btn-danger btn-sm deleteStaffMemberId">Delete</button></td></tr>`
+        <tr><td>${staffText}</td><td><button class="btn btn-danger btn-sm deleteStaffMemberId">Delete</button></td></tr>
       );
       $(this).val(""); // Clear selection after adding
     }
@@ -388,46 +391,6 @@ $(document).ready(function () {
         console.error("Error:", error);
         alert("Error occurred while saving the log.");
       });
-  }
-
-  // View Monitoring Log
-  $(document).on("click", ".view-btn", function () {
-    const row = $(this).closest("tr");
-    const logCode = row.data("log-code");
-
-    // Retrieve data from the table row
-    const logDate = row.find("td:eq(1)").text();
-    const logObservation = row.find("td:eq(2)").text();
-    const fieldCodes = row.find("td:eq(4)").text().split(", ");
-    const cropCodes = row.find("td:eq(5)").text().split(", ");
-    const staffMemberIds = row.find("td:eq(6)").text().split(", ");
-    const observedImage = row.find("td:eq(3)").find("img").attr("src");
-
-    // Populate modal with the extracted data
-    $("#logCodeView").text(logCode || "No Log Code");
-    $("#logDateView").text(logDate || "No Date");
-    $("#logObservationView").text(logObservation || "No Observation");
-    populateTable("#fieldCodesViewTable", fieldCodes);
-    populateTable("#cropCodesViewTable", cropCodes);
-    populateTable("#staffMemberIdViewTable", staffMemberIds);
-
-    // If there's an image, show it in the modal
-    if (observedImage) {
-      $("#imagePreviewView").attr("src", observedImage).show();
-    } else {
-      $("#imagePreviewView").hide();
-    }
-
-    // Show the modal
-    $("#logViewModal").modal("show");
-  });
-
-  // Function to populate the tables in the modal
-  function populateTable(tableId, data) {
-    $(tableId + " tbody").empty();
-    data.forEach(function (item) {
-      $(tableId + " tbody").append(`<tr><td>${item}</td></tr>`);
-    });
   }
 
   // Reset form after saving the log
