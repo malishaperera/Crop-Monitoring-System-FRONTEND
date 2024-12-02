@@ -1,3 +1,4 @@
+/* Global Body Styling */
 body {
   background-color: #f0f2f5;
   font-family: Arial, sans-serif;
@@ -5,17 +6,40 @@ body {
   background-repeat: no-repeat; /* Prevent duplication */
   background-size: cover; /* Ensure the image covers the entire page */
   background-attachment: fixed; /* Keep the image fixed in place when scrolling */
-  background-position: center; /* Center the image */
+  background-position: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  margin: 0;
+  flex-direction: column; /* Ensures content is stacked vertically */
 }
 
+/* Title Form Styling */
+.titleForm {
+  text-align: center;
+  margin-top: 3rem; /* Adjust margin for vertical spacing */
+}
+
+.titleForm h1 {
+  font-size: 4rem; /* Increase the font size of the title */
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Adds a shadow effect to the title text */
+}
+
+/* Container Styling */
 .container {
   max-width: 1200px;
   margin: auto;
-  background: rgba(255, 255, 255, 0.8); /* Add a translucent white background to make content readable */
+  background: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border-radius: 8px;
+  overflow-y: auto; /* Prevents content from overflowing */
+  height: 100%; /* Ensures container takes full available height */
 }
 
+/* Crop Card Styling */
 .crop-card {
   display: flex;
   flex-direction: column;
@@ -27,6 +51,10 @@ body {
   margin: 10px 0;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  min-height: 250px; /* Ensures card has a minimum height */
+  position: relative;
+  overflow: hidden; /* Prevents overflow outside the card */
+  width: 100%; /* Ensures the card takes up full width */
 }
 
 .crop-card:hover {
@@ -40,6 +68,7 @@ body {
   margin-bottom: 15px;
 }
 
+/* Crop Details Styling */
 .crop-details {
   text-align: center;
   margin-bottom: 20px;
@@ -58,10 +87,13 @@ body {
   margin-bottom: 5px;
 }
 
+/* Crop Actions Styling */
 .crop-actions {
   display: flex;
   justify-content: space-between; /* Space buttons evenly */
   align-items: center; /* Vertically center the buttons */
+  margin-top: auto; /* Pushes buttons to the bottom */
+  width: 100%; /* Ensure buttons take up the full width */
 }
 
 .crop-actions button {
@@ -99,17 +131,29 @@ body {
   object-fit: cover;
 }
 
+/* List Group Item Styling */
 .list-group-item {
   font-size: 1rem;
   border: none;
   padding: 10px 15px;
 }
 
+/* Justify Content Styling */
 .justify-content-between {
   justify-content: flex-end !important;
   gap: 2px !important;
 }
+
+/* Card Body Styling */
 .card-body {
   text-align: center; /* Centers the text */
   font-weight: bold; /* Makes the text bold */
+}
+
+/* Add New Crop Button */
+.mt-3.mb-3.text-center .btn {
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
 }
