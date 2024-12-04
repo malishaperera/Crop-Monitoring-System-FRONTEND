@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Dynamic Page Loader</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -13,61 +13,99 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
     />
     <link rel="stylesheet" href="./sidebar.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <!-- sidebar.html -->
-    <div class="sidebar" id="sidebar">
-      <div>
-        <div class="sidebar-header">
-          <i class="fas fa-tree"></i><span>Green Shadow</span>
+    
+    <div class="main-form">
+      <nav class="navbar">
+        <img src="image/icon/logo.png" alt="Logo" class="logo1" />
+        <div class="nav-iconset">
+          <img
+            src="image/icon/dashboard.png"
+            alt="Dashboard"
+            class="logo dashboard-icon"
+          />
+          <img src="image/icon/crop.png" alt="Crop" class="logo crop-icon" />
+          <img
+            src="image/icon/equipment.png"
+            alt="Equipment"
+            class="logo equipment-icon"
+          />
+          <img
+            src="image/icon/field.png"
+            alt="Field"
+            class="logo field-icon"
+          />
+          <img
+            src="image/icon/monitoring-log.png"
+            alt="Monitoring Log"
+            class="logo monitoringLog-icon"
+          />
+          <img
+            src="image/icon/vehicle-wheel.png"
+            alt="Vehicle"
+            class="logo vehicle-icon"
+          />
+          <img
+            src="image/icon/staff.png"
+            alt="Staff"
+            class="logo staff-icon"
+          />
         </div>
-
-        <div class="sidebar-links">
-          <a href="" onclick="loadContent('dashboard')">
-            <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
-          </a>
-
-          <a href="/pages/field.html" onclick="loadContent('field')">
-            <i class="fas fa-seedling"></i><span>Field</span>
-          </a>
-
-          <a href="/pages/crop.html" onclick="loadContent('crop')">
-            <i class="fas fa-leaf"></i><span>Crop</span>
-          </a>
-
-          <a href="/pages/staff.html" onclick="loadContent('staff')">
-            <i class="fas fa-users"></i><span>Staff</span>
-          </a>
-
-          <a href="pages/monitoring_log.html" onclick="loadContent('monitoring-log')">
-            <i class="fas fa-book"></i><span>Monitoring Log</span>
-          </a>
-
-          <a href="/pages/vehicle.html" onclick="loadContent('vehicle')">
-            <i class="fas fa-tractor"></i><span>Vehicle</span>
-          </a>
-
-          <a href="/pages/equipment.html" onclick="loadContent('equipment')">
-            <i class="fas fa-tools"></i><span>Equipment</span>
-          </a>
-
+        <div class="logout">
+          <img src="image/icon/logout.png" alt="Logout" class="logo" />
         </div>
+      </nav>
+      <div class="iframe-div">
+        <iframe src="pages/DashBoard.html" title="Dashboard Content"></iframe>
       </div>
-
-      <div class="sidebar-footer">
-        <a href="#sign-out"
-          ><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
-      </div>
-      
     </div>
-    <i
-      class="fas fa-bars menu-icon"
-      id="menu-icon"
-      aria-label="Toggle Sidebar"
-    ></i>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="./sidebarController.js"></script>
+    <script>
+      // Dynamic iframe source loading
+      $(".dashboard-icon").on("click", function () {
+        console.log("Dashboard clicked");
+        $(".iframe-div iframe").attr("src", "pages/DashBoard.html");
+      });
+      $(".crop-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "pages/crop.html");
+      });
+      $(".equipment-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "pages/equipment.html");
+      });
+      $(".field-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "pages/field.html");
+      });
+
+      $(".monitoringLog-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "pages/monitoring_log.html");
+      });
+
+      $(".vehicle-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "pages/vehicle.html");
+      });
+      $(".staff-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "pages/staff.html");
+      });
+      $(".user-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "pages/field.html");
+      });
+
+
+
+      // Add similar click handlers for other icons
+    </script>
   </body>
 </html>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scrip>
+<script src="./sidebarController.js"></script> -->
