@@ -1,9 +1,33 @@
+// Function to get the token from localStorage
+function getAuthToken() {
+  return localStorage.getItem("authToken");
+}
+
 // Load Field Codes dynamically for the dropdown
 async function loadFieldCodes() {
+  const token = getAuthToken();
+  if (!token) {
+    alert("Authentication token is missing.");
+    return;
+  }
+
   try {
     const response = await fetch(
-      "http://localhost:5055/cropmonitoringcollector/api/v1/fields/allFields"
+      "http://localhost:5055/cropmonitoringcollector/api/v1/crops/allCrops",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include credentials (cookies or other credentials)
+        mode: "cors",
+      }
     );
+
+    console.log("Response status:", response.status);
+    console.log("Response body:", await response.text());
+
     if (!response.ok) throw new Error("Failed to fetch fields");
 
     const fields = await response.json();
@@ -29,10 +53,24 @@ async function loadFieldCodes() {
 
 // Fetch all crops and populate them as cards in the grid
 async function loadAllCrops() {
+  const token = getAuthToken();
+  if (!token) {
+    alert("Authentication token is missing.");
+    return;
+  }
+
   try {
     const response = await fetch(
-      "http://localhost:5055/cropmonitoringcollector/api/v1/crops/allCrops"
+      "http://localhost:5055/cropmonitoringcollector/api/v1/crops/allCrops",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
+
     if (!response.ok) throw new Error("Failed to fetch crops");
 
     const crops = await response.json();
@@ -108,9 +146,22 @@ function addDeleteButtonListeners() {
 
 // Function to fetch crop details and populate the view modal
 async function fetchCropDetails(cropCode) {
+  const token = getAuthToken();
+  if (!token) {
+    alert("Authentication token is missing.");
+    return;
+  }
+
   try {
     const response = await fetch(
-      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`
+      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
     if (!response.ok) throw new Error("Failed to fetch crop details");
 
@@ -139,11 +190,20 @@ async function fetchCropDetails(cropCode) {
 
 // Function to delete a crop
 async function deleteCrop(cropCode) {
+  const token = getAuthToken();
+  if (!token) {
+    alert("Authentication token is missing.");
+    return;
+  }
+
   try {
     const response = await fetch(
       `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -165,9 +225,22 @@ async function deleteCrop(cropCode) {
 
 // Function to populate the edit form
 async function populateEditForm(cropCode) {
+  const token = getAuthToken();
+  if (!token) {
+    alert("Authentication token is missing.");
+    return;
+  }
+
   try {
     const response = await fetch(
-      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`
+      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
     if (!response.ok) throw new Error("Failed to fetch crop details");
 
@@ -196,120 +269,46 @@ async function populateEditForm(cropCode) {
   }
 }
 
-// Handle form submission for adding a new crop
-document
-  .getElementById("addCropForm")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
+// Add crop (for both Add and Edit actions)
+async function addOrEditCrop(event) {
+  event.preventDefault();
 
-    const cropCommonName = document.getElementById("cropName").value;
-    const cropScientificName =
-      document.getElementById("cropScientificName").value;
-    const category = document.getElementById("category").value;
-    const cropSeason = document.getElementById("season").value;
-    const fieldCode = document.getElementById("fieldCode").value;
-    const cropImageFile = document.getElementById("cropImage").files[0];
+  const token = getAuthToken();
+  if (!token) {
+    alert("Authentication token is missing.");
+    return;
+  }
 
-    if (!cropImageFile) {
-      alert("Please upload an image!");
-      return;
-    }
+  const cropCode = document
+    .getElementById("editCropForm")
+    .getAttribute("data-crop-code");
 
-    const formData = new FormData();
-    formData.append("cropCommonName", cropCommonName);
-    formData.append("cropScientificName", cropScientificName);
-    formData.append("category", category);
-    formData.append("cropSeason", cropSeason);
-    formData.append("fieldCode", fieldCode);
-    formData.append("cropImage", cropImageFile);
+  const formData = new FormData(document.getElementById("editCropForm"));
 
-    try {
-      const response = await fetch(
-        "http://localhost:5055/cropmonitoringcollector/api/v1/crops",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (response.ok) {
-        loadAllCrops();
-        alert("Crop saved successfully!");
-        document.getElementById("addCropForm").reset();
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById("addCropModal")
-        );
-        modal.hide();
-      } else {
-        const errorMessage = await response.text();
-        alert(`Error adding crop: ${errorMessage}`);
+  try {
+    const response = await fetch(
+      cropCode
+        ? `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`
+        : "http://localhost:5055/cropmonitoringcollector/api/v1/crops/addCrop",
+      {
+        method: cropCode ? "PUT" : "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
       }
-    } catch (error) {
-      console.error("Error adding crop:", error);
-      alert("An error occurred. Please try again later.");
-    }
-  });
+    );
 
-// Handle form submission for editing a crop
-// Handle form submission for editing a crop
-document
-  .getElementById("editCropForm")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
+    if (!response.ok) throw new Error("Failed to add or edit crop");
 
-    const cropCode = e.target.getAttribute("data-crop-code");
-    const cropCommonName = document.getElementById("editCropName").value;
-    const cropScientificName = document.getElementById(
-      "editCropScientificName"
-    ).value;
-    const category = document.getElementById("editCategory").value;
-    const cropSeason = document.getElementById("editSeason").value;
-    const fieldCode = document.getElementById("editFieldCode").value;
-    const cropImageFile = document.getElementById("editCropImage").files[0];
+    alert(cropCode ? "Crop updated successfully!" : "Crop added successfully!");
+    loadAllCrops(); // Reload crops after adding or editing
+  } catch (error) {
+    console.error("Error adding or editing crop:", error);
+    alert("An error occurred while adding or editing the crop. Please try again.");
+  }
+}
 
-    const formData = new FormData();
-    formData.append("cropCommonName", cropCommonName);
-    formData.append("cropScientificName", cropScientificName);
-    formData.append("category", category);
-    formData.append("cropSeason", cropSeason);
-    formData.append("fieldCode", fieldCode);
-
-    if (cropImageFile) {
-      formData.append("cropImage", cropImageFile);
-    }
-
-    try {
-      const response = await fetch(
-        `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`,
-        {
-          method: "PATCH",
-          body: formData,
-        }
-      );
-
-      if (response.ok) {
-        loadAllCrops(); // Refresh the crops display
-        alert("Crop updated successfully!");
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById("editCropModal")
-        );
-        modal.hide();
-      } else {
-        const errorMessage = await response.text();
-        alert(`Error updating crop: ${errorMessage}`);
-      }
-    } catch (error) {
-      console.error("Error updating crop:", error);
-      alert("An error occurred. Please try again later.");
-    }
-  });
-
-// Initial load of field codes and crops
-document.addEventListener("DOMContentLoaded", () => {
-  loadFieldCodes();
-  loadAllCrops();
-});
-
-
-
-//This Crop
+// Initialize the page by loading field codes and crops
+loadFieldCodes();
+loadAllCrops();

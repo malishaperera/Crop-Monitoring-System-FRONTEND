@@ -11,6 +11,16 @@
       document.getElementById(id).textContent = current;
   }, 20); // Speed of the animation
 }
+// Check if the token exists in localStorage
+const authToken = localStorage.getItem("authToken");
+
+if (!authToken) {
+  // If there's no token, log a message
+  console.log("No auth token found in localStorage");
+} else {
+  // If the token exists, print it in the console
+  console.log("Auth Token from localStorage:", authToken);
+}
 
 // Start animations for counts
 animateCount('staffCount', 50); 
