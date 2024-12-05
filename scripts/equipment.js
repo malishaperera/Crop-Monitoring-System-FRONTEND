@@ -1,4 +1,10 @@
 $(document).ready(function () {
+  const token = localStorage.getItem("authToken"); // Replace "authToken" with your actual token key
+  if (!token) {
+    alert("You are not authenticated. Redirecting to login page.");
+    window.location.href = "login.html"; // Redirect to login if token is missing
+  }
+
   const apiUrl =
     "http://localhost:5055/cropmonitoringcollector/api/v1/equipments";
   const fieldApiUrl =

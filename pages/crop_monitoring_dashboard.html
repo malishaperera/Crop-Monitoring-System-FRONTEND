@@ -101,7 +101,9 @@
         $(".iframe-div iframe").attr("src", "staff.html");
       });
       $(".logout").on("click", function () {
-        console.log("Staff clicked");
+        console.log("logout clicked");
+         // Clear localStorage
+        localStorage.clear();
         window.location.href = "login_page.html";
       });
      

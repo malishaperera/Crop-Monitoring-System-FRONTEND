@@ -1,4 +1,5 @@
 $(document).ready(function () {
+ 
   let isEdit = false,
     editId;
 
@@ -6,10 +7,21 @@ $(document).ready(function () {
   function showInfo() {
     $("#data").empty();
     $("#loadingSpinner").show();
+    const token = getAuthToken();
+
+    if (!token) {
+      alert("Authentication token is missing. Please log in again.");
+      window.location.href = "pages/login_page.html";
+      return;
+    }
+
 
     $.ajax({
       url: "http://localhost:5055/cropmonitoringcollector/api/v1/fields/allFields",
       type: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the token in the Authorization header
+      },
       dataType: "json",
       success: function (response) {
         $("#loadingSpinner").hide();
@@ -83,6 +95,12 @@ $(document).ready(function () {
       alert("The file is too large. Please upload an image smaller than 1MB.");
     }
   }
+
+  function getAuthToken() {
+    const token = localStorage.getItem("authToken"); // Make sure 'token' is the key where the JWT is stored
+    return token;  // Return the token so it can be used later
+}
+
 
   // Handle form submission (add/edit)
   $(".submit").click(function (e) {
@@ -165,12 +183,24 @@ $(document).ready(function () {
       ? `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${editId}`
       : "http://localhost:5055/cropmonitoringcollector/api/v1/fields";
 
+    // Get the token from localStorage
+    const token = getAuthToken();
+
+    if (!token) {
+      alert("Authentication token is missing. Please log in again.");
+      window.location.href = "login.html";
+      return;
+    }
+
     $.ajax({
       url: url,
       type: requestType,
       data: formData,
       processData: false,
       contentType: false,
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
       beforeSend: function () {
         $("#loadingSpinner").show();
       },
@@ -197,11 +227,22 @@ $(document).ready(function () {
   $(document).on("click", ".view-btn", function () {
     const fieldId = $(this).data("id");
 
+    const token = getAuthToken(); 
+
+    if (!token) {
+      alert("Authentication token is missing. Please log in again.");
+      window.location.href = "login.html";
+      return;
+    }
+
     // Fetch field details via AJAX
     $.ajax({
       url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${fieldId}`,
       type: "GET",
       dataType: "json",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
       success: function (response) {
         // Populate the modal with field details
         $("#viewFieldName").val(response.fieldName);
@@ -244,11 +285,22 @@ $(document).ready(function () {
     isEdit = true;
     editId = $(this).data("id");
 
+    const token = getAuthToken(); 
+
+    if (!token) {
+      alert("Authentication token is missing. Please log in again.");
+      window.location.href = "login.html";
+      return;
+    }
+
     // Fetch field data for editing
     $.ajax({
       url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${editId}`,
       type: "GET",
       dataType: "json",
+      headers: {
+        "Authorization": `Bearer ${token}`, // Include token in the header
+      },
       success: function (response) {
         // Pre-fill form for editing
         $("#fieldName").val(response.fieldName);
@@ -270,10 +322,22 @@ $(document).ready(function () {
   // Handle delete button click
   $(document).on("click", ".delete-btn", function () {
     const fieldId = $(this).data("id");
+    const token = getAuthToken();
+
+    if (!token) {
+      alert("Authentication token is missing. Please log in again.");
+      window.location.href = "login.html";
+      return;
+    }
     if (confirm("Are you sure you want to delete this field?")) {
+      
+
       $.ajax({
         url: `http://localhost:5055/cropmonitoringcollector/api/v1/fields/${fieldId}`,
         type: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
         success: function () {
           alert("Field deleted successfully!");
           showInfo();
