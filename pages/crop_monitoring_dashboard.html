@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Page Loader</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../styles/sidebar.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    
+    <div class="main-form">
+      <nav class="navbar">
+        <img src="../image/icon/logo.png" alt="Logo" class="logo1" />
+        <div class="nav-iconset">
+          <img
+            src="../image/icon/dashboard.png"
+            alt="Dashboard"
+            class="logo dashboard-icon"
+            title="dashboard"
+          />
+          <img src="../image/icon/crop.png" alt="Crop" class="logo crop-icon" title="Crop-Manage" />
+          <img
+            src="../image/icon/equipment.png"
+            alt="Equipment"
+            class="logo equipment-icon"
+            title="Equipment-Manage"
+          />
+          <img
+            src="../image/icon/field.png"
+            alt="Field"
+            class="logo field-icon"
+            title="Field-Manage"
+          />
+          <img
+            src="../image/icon/monitoring-log.png"
+            alt="Monitoring Log"
+            class="logo monitoringLog-icon"
+            title="monitoringLog-Manage"
+          />
+          <img
+            src="../image/icon/vehicle-wheel.png"
+            alt="Vehicle"
+            class="logo vehicle-icon"
+            title="vehicle-Manage"
+          />
+          <img
+            src="../image/icon/staff.png"
+            alt="Staff"
+            class="logo staff-icon"
+            title="staff-Manage"
+          />
+        </div>
+        <div class="logout">
+          <img src="../image/icon/logout.png" alt="Logout" class="logo logout" />
+        </div>
+      </nav>
+      <div class="iframe-div">
+        <iframe src="dashBoard.html" title="Dashboard Content"></iframe>
+      </div>
+    </div>
+
+    <script>
+      // Dynamic iframe source loading
+      $(".dashboard-icon").on("click", function () {
+        console.log("Dashboard clicked");
+        $(".iframe-div iframe").attr("src", "dashBoard.html");
+      });
+      $(".crop-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "crop.html");
+      });
+      $(".equipment-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "equipment.html");
+      });
+      $(".field-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "field.html");
+      });
+
+      $(".monitoringLog-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "monitoring_log.html");
+      });
+
+      $(".vehicle-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "vehicle.html");
+      });
+      $(".staff-icon").on("click", function () {
+        console.log("Staff clicked");
+        $(".iframe-div iframe").attr("src", "staff.html");
+      });
+      $(".logout").on("click", function () {
+        console.log("Staff clicked");
+        window.location.href = "login_page.html";
+      });
+     
+
+      // Add similar click handlers for other icons
+    </script>
+  </body>
+</html>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scrip>
+<script src="./sidebarController.js"></script> -->

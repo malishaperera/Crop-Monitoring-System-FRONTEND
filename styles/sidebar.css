@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   background-color: #f5f5f5;
   height: 100vh;
   display: flex;
@@ -29,7 +29,7 @@ body {
   width: 90%;
   height: 85vh;
   /* background: radial-gradient(rgb(154, 255, 154),white); */
-  background: radial-gradient(rgb(176, 255, 176),white);
+  background: radial-gradient(rgb(176, 255, 176), white);
   border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: grid;
@@ -39,7 +39,7 @@ body {
 
 .navbar {
   background-color: #ffffff;
-  
+
   padding: 2rem 1rem;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -61,7 +61,7 @@ body {
 .logo {
   width: 48px;
   height: 48px;
-  
+
   border-radius: 12px;
   padding: 8px;
   margin: 0 auto;
@@ -71,7 +71,6 @@ body {
 .logo:hover {
   transform: scale(1.05);
 }
-
 
 .nav-iconset {
   display: flex;
@@ -88,7 +87,7 @@ body {
 .nav-iconset .logo:hover {
   /* background-color: rgba(255, 255, 255, 0.2); */
   /* background:(rgb(167, 255, 167)); */
-  background:rgb(137, 250, 92);
+  background: rgb(137, 250, 92);
 }
 
 .logout {
@@ -118,25 +117,24 @@ iframe {
   height: 100%;
   border: none;
   border-radius: 10px;
-  background:transparent;
-  
+  background: transparent;
 }
 
 @media (max-width: 768px) {
   .main-form {
-      grid-template-columns: 80px auto;
+    grid-template-columns: 80px auto;
   }
 
   .logo {
-      width: 40px;
-      height: 40px;
+    width: 40px;
+    height: 40px;
   }
 
   .navbar {
-      padding: 1rem 0.5rem;
+    padding: 1rem 0.5rem;
   }
 
   .iframe-div {
-      padding: 10px;
+    padding: 10px;
   }
 }
