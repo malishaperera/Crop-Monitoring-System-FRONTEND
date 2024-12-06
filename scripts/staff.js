@@ -23,15 +23,16 @@ async function loadStaffData() {
     if (!response.ok) {
       throw new Error("Failed to fetch staff data");
     }
-
+ 
     const staffList = await response.json();
     const container = document.getElementById("staff-cards-container");
 
     // Clear existing content
     container.innerHTML = "";
-
     // Iterate through staff data and create cards
     staffList.forEach((staff) => {
+      const formattedJoinedDate = staff.joinedDate.split("T")[0];
+      
       const staffCard = document.createElement("div");
       staffCard.classList.add("col");
       staffCard.innerHTML = `
@@ -43,7 +44,7 @@ async function loadStaffData() {
               <strong>Designation:</strong> ${staff.designation} <br />
               <strong>Role:</strong> ${staff.role} <br />
               <strong>Gender:</strong> ${staff.gender} <br />
-              <strong>Joined:</strong> ${staff.joinedDate} <br />
+              <strong>Joined:</strong> ${formattedJoinedDate} <br />
               <strong>Date of Birth:</strong> ${staff.DOB} <br />
               <strong>Contact:</strong> ${staff.contactNo} <br />
               <strong>Email:</strong> ${staff.email} <br />

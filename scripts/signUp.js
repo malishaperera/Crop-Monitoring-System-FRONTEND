@@ -59,7 +59,7 @@ signupForm.addEventListener("submit", function (event) {
         // Store the JWT token (optional: in localStorage or sessionStorage)
         localStorage.setItem("authToken", result.token);
         // Optionally, redirect the user to another page
-        window.location.href = "/dashboard";
+        window.location.href = "pages/login_page.html";
       } else {
         alert("Signup failed. Please try again.");
         console.log("Signup failed: No token returned.");
