@@ -3,7 +3,7 @@ function getAuthToken() {
   const token = localStorage.getItem("authToken");
   if (!token) {
     alert("User not authenticated. Redirecting to login page...");
-    window.location.href = "/login.html"; // Redirect to login if not authenticated
+    window.location.href = "/login.html";
     return null;
   }
   return token;
@@ -13,7 +13,7 @@ function getAuthToken() {
 async function loadFieldCodes() {
   try {
     const token = getAuthToken();
-    if (!token) return; // If no token, return early
+    if (!token) return;
 
     const response = await fetch(
       "http://localhost:5055/cropmonitoringcollector/api/v1/fields/allFields", {
@@ -47,7 +47,7 @@ async function loadFieldCodes() {
 async function loadAllCrops() {
   try {
     const token = getAuthToken();
-    if (!token) return; // If no token, return early
+    if (!token) return;
 
     const response = await fetch(
       "http://localhost:5055/cropmonitoringcollector/api/v1/crops/allCrops", {
@@ -61,7 +61,7 @@ async function loadAllCrops() {
     const crops = await response.json();
     const cropGrid = document.getElementById("cropGrid");
 
-    cropGrid.innerHTML = ""; // Clear the grid before appending
+    cropGrid.innerHTML = "";
 
     crops.forEach((crop) => {
       const cropImageURL = `data:image/jpeg;base64,${crop.cropImage}`;
@@ -133,8 +133,7 @@ function addDeleteButtonListeners() {
 async function fetchCropDetails(cropCode) {
   try {
     const token = getAuthToken();
-    if (!token) return; // If no token, return early
-
+    if (!token) return;
     const response = await fetch(
       `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`, {
         headers: {
@@ -168,7 +167,7 @@ async function fetchCropDetails(cropCode) {
 async function deleteCrop(cropCode) {
   try {
     const token = getAuthToken();
-    if (!token) return; // If no token, return early
+    if (!token) return;
 
     const response = await fetch(
       `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`, {
@@ -196,7 +195,7 @@ async function deleteCrop(cropCode) {
 async function populateEditForm(cropCode) {
   try {
     const token = getAuthToken();
-    if (!token) return; // If no token, return early
+    if (!token) return;
 
     const response = await fetch(
       `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`, {
@@ -215,7 +214,7 @@ async function populateEditForm(cropCode) {
     document.getElementById("editCategory").value = crop.category;
     document.getElementById("editSeason").value = crop.cropSeason;
     document.getElementById("editFieldCode").value = crop.fieldCode;
-    document.getElementById("editCropImage").value = ""; // Reset file input
+    document.getElementById("editCropImage").value = ""; 
 
     // Store cropCode as a data attribute for later use
     document.getElementById("editCropForm").setAttribute("data-crop-code", cropCode);
@@ -234,7 +233,7 @@ document.getElementById("addCropForm").addEventListener("submit", async function
   e.preventDefault();
 
   const token = getAuthToken();
-  if (!token) return; // If no token, return early
+  if (!token) return; 
 
   const cropCommonName = document.getElementById("cropName").value;
   const cropScientificName = document.getElementById("cropScientificName").value;
@@ -286,7 +285,7 @@ document.getElementById("editCropForm").addEventListener("submit", async functio
   e.preventDefault();
 
   const token = getAuthToken();
-  if (!token) return; // If no token, return early
+  if (!token) return;
 
   const cropCode = document.getElementById("editCropForm").getAttribute("data-crop-code");
   const cropCommonName = document.getElementById("editCropName").value;
@@ -317,7 +316,7 @@ document.getElementById("editCropForm").addEventListener("submit", async functio
 
     if (response.ok) {
       alert("Crop updated successfully!");
-      loadAllCrops(); // Reload crops after update
+      loadAllCrops();
       const modal = bootstrap.Modal.getInstance(document.getElementById("editCropModal"));
       modal.hide();
     } else {
@@ -330,11 +329,7 @@ document.getElementById("editCropForm").addEventListener("submit", async functio
   }
 });
 
-// Initialize functions on page load
-// window.onload = function () {
-//   loadFieldCodes();
-//   loadAllCrops();
-// };
+
 // Initial load of field codes and crops
 document.addEventListener("DOMContentLoaded", () => {
   loadFieldCodes();

@@ -8,18 +8,18 @@ $(document).ready(function () {
   const token = localStorage.getItem("authToken");
   if (!token) {
     alert("You are not authenticated. Redirecting to login page.");
-    window.location.href = "login.html"; // Redirect if no token is found
+    window.location.href = "login.html";
     return;
   }
 
   // Configure default AJAX settings to include the Authorization header
   $.ajaxSetup({
     headers: {
-      Authorization: `Bearer ${token}` // Attach token to all requests
+      Authorization: `Bearer ${token}`
     }
   });
 
-  let equipmentData = []; // Store equipment data locally
+  let equipmentData = []; 
 
   // Function to load all fields into dropdown menus
   function loadFields() {
@@ -35,7 +35,7 @@ $(document).ready(function () {
         response.forEach((field) => {
           const option = new Option(field.fieldCode, field.fieldCode);
           editFieldDropdown.append(option);
-          addFieldDropdown.append(option.cloneNode(true)); // Clone for Add Form
+          addFieldDropdown.append(option.cloneNode(true)); 
         });
       },
       error: function (xhr, status, error) {
@@ -58,7 +58,7 @@ $(document).ready(function () {
         response.forEach((staff) => {
           const option = new Option(staff.staffMemberId, staff.staffMemberId);
           editStaffDropdown.append(option);
-          addStaffDropdown.append(option.cloneNode(true)); // Clone for Add Form
+          addStaffDropdown.append(option.cloneNode(true));
         });
       },
       error: function (xhr, status, error) {
@@ -70,7 +70,7 @@ $(document).ready(function () {
   // Function to render equipment cards on the page
   function renderEquipmentCards() {
     const container = $("#equipment-cards-container");
-    container.empty(); // Clear existing cards
+    container.empty();
 
     equipmentData.forEach((equipment) => {
       const card = `

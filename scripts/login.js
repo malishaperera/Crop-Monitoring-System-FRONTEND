@@ -1,9 +1,9 @@
 document
   .getElementById("loginForm")
   .addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
-    console.log("hiiiii")
+    console.log("hiiiii");
     // Get email and password values from the form
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;

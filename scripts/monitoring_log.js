@@ -11,7 +11,7 @@ $(document).ready(function () {
     url: "http://localhost:5055/cropmonitoringcollector/api/v1/fields/allFields",
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+      Authorization: `Bearer ${token}`,
     },
     success: function (data) {
       if (data && Array.isArray(data)) {
@@ -86,7 +86,7 @@ $(document).ready(function () {
       Authorization: `Bearer ${token}`,
     },
     success: function (data) {
-      console.log(data); // Check if data is returned properly
+      console.log(data);
       if (data && Array.isArray(data)) {
         data.forEach(function (log) {
           const fieldCodes = log.fieldCodes.join(", ") || "No Field Codes";
@@ -124,7 +124,6 @@ $(document).ready(function () {
     },
   });
 
-  // --------------------------------------------start----------------------------------------------------
   // Edit Monitoring Log
   $(document).on("click", ".edit-btn", function () {
     const row = $(this).closest("tr");
@@ -133,9 +132,9 @@ $(document).ready(function () {
     const observedImage = row.find("td:eq(3)").find("img").attr("src");
 
     if (observedImage) {
-      $("#imagePreview").attr("src", observedImage).show(); // Show image in modal
+      $("#imagePreview").attr("src", observedImage).show(); 
     } else {
-      $("#imagePreview").hide(); // Hide image preview if no image
+      $("#imagePreview").hide();
     }
 
     const logObservation = row.find("td:eq(2)").text();
@@ -153,7 +152,7 @@ $(document).ready(function () {
     $("#saveLogBtn")
       .off("click")
       .on("click", function () {
-        updateLog(logCode, observedImage); // Pass the current image URL to the update function
+        updateLog(logCode, observedImage);
       });
   });
 
@@ -180,12 +179,12 @@ $(document).ready(function () {
 
     const newImage = $("#observedImage")[0].files[0];
     if (newImage) {
-      logData.append("observedImage", newImage); // Append new image
+      logData.append("observedImage", newImage);
     } else {
       if (observedImage && observedImage !== "") {
-        logData.append("observedImage", observedImage); // Send the existing image URL (base64 or URL)
+        logData.append("observedImage", observedImage);
       } else {
-        logData.append("observedImage", ""); // Send an empty string if no image exists
+        logData.append("observedImage", "");
       }
     }
 
@@ -195,7 +194,7 @@ $(document).ready(function () {
         method: "PATCH",
         body: logData,
         headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          Authorization: `Bearer ${token}`, 
         },
       }
     )
@@ -222,8 +221,6 @@ $(document).ready(function () {
     return data;
   }
 
-  // --------------------------------------------end----------------------------------------------------
-
   // Delete Monitoring Log
   $(document).on("click", ".delete-btn", function () {
     const logCode = $(this).closest("tr").data("log-code");
@@ -237,7 +234,7 @@ $(document).ready(function () {
         url: `http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/${logCode}`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          Authorization: `Bearer ${token}`,
         },
         success: function () {
           console.log(`Log ${logCode} deleted successfully.`);
@@ -255,37 +252,37 @@ $(document).ready(function () {
   // Add selected Field Code to the table
   $("#fieldCodesSelect").change(function () {
     const fieldCode = $(this).val();
-    const fieldText = $("#fieldCodesSelect option:selected").text(); // Get the text of the selected option
+    const fieldText = $("#fieldCodesSelect option:selected").text();
 
     if (fieldCode) {
       $("#fieldCodesTable tbody").append(
         `<tr><td>${fieldText}</td><td><button class="btn btn-danger btn-sm deleteFieldCode">Delete</button></td></tr>`
       );
-      $(this).val(""); // Clear the select dropdown after adding
+      $(this).val("");
     }
   });
 
   // Add selected Crop Code to the table
   $("#cropCodesSelect").change(function () {
     const cropCode = $(this).val();
-    const cropText = $("#cropCodesSelect option:selected").text(); // Get the text of the selected option
+    const cropText = $("#cropCodesSelect option:selected").text();
     if (cropCode) {
       $("#cropCodesTable tbody").append(
         `<tr><td>${cropText}</td><td><button class="btn btn-danger btn-sm deleteCropCode">Delete</button></td></tr>`
       );
-      $(this).val(""); // Clear selection after adding
+      $(this).val("");
     }
   });
 
   // Add selected Staff Member ID to the table
   $("#staffMemberIdSelect").change(function () {
     const staffMemberId = $(this).val();
-    const staffText = $("#staffMemberIdSelect option:selected").text(); // Get the text of the selected option
+    const staffText = $("#staffMemberIdSelect option:selected").text();
     if (staffMemberId) {
       $("#staffMemberIdTable tbody").append(
         `<tr><td>${staffText}</td><td><button class="btn btn-danger btn-sm deleteStaffMemberId">Delete</button></td></tr>`
       );
-      $(this).val(""); // Clear selection after adding
+      $(this).val("");
     }
   });
 
@@ -377,14 +374,13 @@ $(document).ready(function () {
         method: "POST",
         body: logData, // Send the FormData
         headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          Authorization: `Bearer ${token}`,
         },
       }
     )
       .then((response) => {
         if (response.ok) {
           alert("Log saved successfully!");
-          // Reset the form
           resetForm();
         } else {
           alert("Failed to save the log. Please try again.");

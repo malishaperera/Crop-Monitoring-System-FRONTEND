@@ -7,8 +7,8 @@ fetch("http://localhost:5055/cropmonitoringcollector/api/v1/staffs/allStaffs")
     // Populate the staffId dropdown with staff data from the backend
     staffs.forEach((staff) => {
       const option = document.createElement("option");
-      option.value = staff.staffMemberId;  // Assuming staff has a staffMemberId property
-      option.textContent = `Staff ID: ${staff.staffMemberId} - ${staff.firstName}`;  // Display staff ID and name
+      option.value = staff.staffMemberId;
+      option.textContent = `Staff ID: ${staff.staffMemberId} - ${staff.firstName}`;
       staffIdSelect.appendChild(option);
     });
   })
@@ -21,7 +21,7 @@ fetch("http://localhost:5055/cropmonitoringcollector/api/v1/staffs/allStaffs")
 const signupForm = document.getElementById("signupForm");
 
 signupForm.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent default form submission
+  event.preventDefault();
 
   // Get form values
   const email = document.getElementById("email").value;
@@ -35,21 +35,21 @@ signupForm.addEventListener("submit", function (event) {
   if (password !== confirmPassword) {
     alert("Passwords do not match. Please check and try again.");
     console.log("Password mismatch: Passwords don't match.");
-    return;  // Prevent form submission if passwords don't match
+    return;
   }
 
   // Prepare the FormData object
   const formData = new FormData();
   formData.append("email", email);
   formData.append("password", password);
-  formData.append("staffMemberId", staffMemberId);  // Add the staff member ID to the form data
+  formData.append("staffMemberId", staffMemberId);
 
-  console.log("Form data:", formData);  // Log the form data for debugging
+  console.log("Form data:", formData);
 
   // Send data to your backend API for signup
   fetch("http://localhost:5055/cropmonitoringcollector/api/v1/auth/signup", {
     method: "POST",
-    body: formData, // Send FormData object directly
+    body: formData,
   })
     .then((response) => response.json())
     .then((result) => {
@@ -59,7 +59,7 @@ signupForm.addEventListener("submit", function (event) {
         // Store the JWT token (optional: in localStorage or sessionStorage)
         localStorage.setItem("authToken", result.token);
         // Optionally, redirect the user to another page
-        window.location.href = "/dashboard";  // Example: Redirect to a dashboard
+        window.location.href = "/dashboard";
       } else {
         alert("Signup failed. Please try again.");
         console.log("Signup failed: No token returned.");

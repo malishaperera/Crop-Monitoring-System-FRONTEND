@@ -145,14 +145,14 @@ document
       }
 
       if (response.ok) {
-        await loadStaffData(); // Reload staff data
+        await loadStaffData();
 
         // Reset the form and hide the modal
         bootstrap.Modal.getInstance(
           document.getElementById("addStaffModal")
         ).hide();
         document.getElementById("staffForm").reset();
-        document.getElementById("staffForm").removeAttribute("data-editing"); // Clear editing ID
+        document.getElementById("staffForm").removeAttribute("data-editing");
 
         alert(
           staffMemberId
@@ -254,7 +254,7 @@ async function editStaffDetails(staffMemberId) {
 
     // Populate the form with staff details for editing
     const form = document.getElementById("staffForm");
-    form.setAttribute("data-editing", staffMemberId); // Set the editing ID
+    form.setAttribute("data-editing", staffMemberId);
 
     document.getElementById("firstName").value = staff.firstName;
     document.getElementById("lastName").value = staff.lastName;
@@ -306,7 +306,7 @@ async function deleteStaff(staffMemberId) {
 
     if (response.ok) {
       alert("Staff deleted successfully!");
-      loadStaffData(); // Reload staff data after deletion
+      loadStaffData();
     } else {
       alert("Failed to delete staff. Please try again.");
     }

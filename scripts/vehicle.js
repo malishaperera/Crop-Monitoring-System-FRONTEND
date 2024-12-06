@@ -20,7 +20,7 @@ $(document).ready(function () {
     },
     success: function (staffData) {
       const staffDropdown = $("#staffMemberId");
-      staffDropdown.empty(); // Clear any existing options
+      staffDropdown.empty();
       staffData.forEach((staff) => {
         staffDropdown.append(
           `<option value="${staff.staffMemberId}">${staff.staffMemberId}</option>`
@@ -43,7 +43,7 @@ $(document).ready(function () {
       },
       success: function (vehicleData) {
         const tableBody = $("#vehicleTable tbody");
-        tableBody.empty(); // Clear existing rows if any
+        tableBody.empty();
         vehicleData.forEach((vehicle) => {
           tableBody.append(`
             <tr>
@@ -122,7 +122,7 @@ $(document).ready(function () {
         success: function (vehicleDetails) {
           if (vehicleDetails) {
             // Populate modal fields
-            $("#vehicleCode").val(vehicleDetails.vehicleCode); // Set vehicleCode in hidden input
+            $("#vehicleCode").val(vehicleDetails.vehicleCode); 
             $("#licensePlateNumber").val(vehicleDetails.licensePlateNumber);
             $("#vehicleCategory").val(vehicleDetails.vehicleCategory);
             $("#fuelType").val(vehicleDetails.fuelType);
@@ -178,7 +178,7 @@ $(document).ready(function () {
   // Save or update vehicle
   $(document).on("click", "#saveVehicle, #updateVehicle", function () {
     const isUpdate = $(this).attr("id") === "updateVehicle";
-    const vehicleCode = $("#vehicleCode").val(); // Get vehicleCode for updates
+    const vehicleCode = $("#vehicleCode").val();
 
     const vehicleData = {
       licensePlateNumber: $("#licensePlateNumber").val(),
@@ -210,7 +210,7 @@ $(document).ready(function () {
             : "Vehicle added successfully!"
         );
         $("#addVehicleModal").modal("hide");
-        loadVehicleData(); // Reload the table
+        loadVehicleData();
       },
       error: function (xhr, status, error) {
         console.error("Error saving/updating vehicle:", error);

@@ -1,24 +1,22 @@
 // Number counting animation for the cards
  function animateCount(id, target) {
   let current = 0;
-  const increment = Math.ceil(target / 100); // Incremental step
+  const increment = Math.ceil(target / 100);
   const interval = setInterval(() => {
       current += increment;
       if (current >= target) {
-          current = target; // Stop at the target number
+          current = target;
           clearInterval(interval);
       }
       document.getElementById(id).textContent = current;
-  }, 20); // Speed of the animation
+  }, 20);
 }
 // Check if the token exists in localStorage
 const authToken = localStorage.getItem("authToken");
 
 if (!authToken) {
-  // If there's no token, log a message
   console.log("No auth token found in localStorage");
 } else {
-  // If the token exists, print it in the console
   console.log("Auth Token from localStorage:", authToken);
 }
 
