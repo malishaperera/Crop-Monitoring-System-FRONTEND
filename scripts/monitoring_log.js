@@ -1,8 +1,18 @@
 $(document).ready(function () {
+  // Retrieve the token from localStorage
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    window.location.href = "login.html";
+  }
+
   // Load Field Codes dynamically from the backend
   $.ajax({
     url: "http://localhost:5055/cropmonitoringcollector/api/v1/fields/allFields",
     method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+    },
     success: function (data) {
       if (data && Array.isArray(data)) {
         data.forEach(function (field) {
@@ -24,6 +34,9 @@ $(document).ready(function () {
   $.ajax({
     url: "http://localhost:5055/cropmonitoringcollector/api/v1/crops/allCrops",
     method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     success: function (data) {
       if (data && Array.isArray(data)) {
         data.forEach(function (crop) {
@@ -45,6 +58,9 @@ $(document).ready(function () {
   $.ajax({
     url: "http://localhost:5055/cropmonitoringcollector/api/v1/staffs/allStaffs",
     method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     success: function (data) {
       if (data && Array.isArray(data)) {
         data.forEach(function (staff) {
@@ -66,6 +82,9 @@ $(document).ready(function () {
   $.ajax({
     url: "http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/allMonitoringLogs",
     method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     success: function (data) {
       console.log(data); // Check if data is returned properly
       if (data && Array.isArray(data)) {
@@ -75,12 +94,10 @@ $(document).ready(function () {
           const staffMemberIds =
             log.staffMemberIds.join(", ") || "No Staff Members";
 
-          // Ensure the image URL or base64 data is correctly formatted
           const imagePreview = log.observedImage
             ? `<img src="data:image/jpeg;base64,${log.observedImage}" alt="Image" width="100" />`
             : "No Image";
 
-          // Append data to the monitoring logs table
           $("#monitoringLogsTable tbody").append(
             `<tr data-log-code="${log.logCode}">
               <td>${log.logCode || "No Log Code"}</td>
@@ -108,23 +125,19 @@ $(document).ready(function () {
   });
 
   // --------------------------------------------start----------------------------------------------------
-
   // Edit Monitoring Log
   $(document).on("click", ".edit-btn", function () {
     const row = $(this).closest("tr");
     const logCode = row.data("log-code");
 
-    // Retrieve the observed image from the row (column 3 in this case)
     const observedImage = row.find("td:eq(3)").find("img").attr("src");
 
-    // If observedImage exists, show it in the modal
     if (observedImage) {
       $("#imagePreview").attr("src", observedImage).show(); // Show image in modal
     } else {
       $("#imagePreview").hide(); // Hide image preview if no image
     }
 
-    // Populate other fields (log observation, field codes, crop codes, etc.)
     const logObservation = row.find("td:eq(2)").text();
     const fieldCodes = row.find("td:eq(4)").text().split(", ");
     const cropCodes = row.find("td:eq(5)").text().split(", ");
@@ -135,10 +148,8 @@ $(document).ready(function () {
     populateTable("#cropCodesTable", cropCodes);
     populateTable("#staffMemberIdTable", staffMemberIds);
 
-    // Show the modal
     $("#logModal").modal("show");
 
-    // Handle the save button click to update the log
     $("#saveLogBtn")
       .off("click")
       .on("click", function () {
@@ -146,7 +157,6 @@ $(document).ready(function () {
       });
   });
 
-  // Populate table with data
   function populateTable(tableId, data) {
     $(tableId + " tbody").empty();
     data.forEach(function (item) {
@@ -156,50 +166,44 @@ $(document).ready(function () {
     });
   }
 
-  // Save updated log
-  // Save updated log
   function updateLog(logCode, observedImage) {
     const logObservation = $("#logObservation").val();
     const fieldCodes = collectTableData("#fieldCodesTable");
     const cropCodes = collectTableData("#cropCodesTable");
     const staffMemberIds = collectTableData("#staffMemberIdTable");
 
-    // Prepare FormData
     const logData = new FormData();
     logData.append("logObservation", logObservation);
     fieldCodes.forEach((code) => logData.append("fieldCodes", code));
     cropCodes.forEach((code) => logData.append("cropCodes", code));
     staffMemberIds.forEach((id) => logData.append("staffMemberIds", id));
 
-    // Check if a new image is uploaded
     const newImage = $("#observedImage")[0].files[0];
     if (newImage) {
       logData.append("observedImage", newImage); // Append new image
-      console.log("New Image uploaded:", newImage);
     } else {
-      // If no new image is uploaded, check the observedImage passed
       if (observedImage && observedImage !== "") {
-        console.log("Using existing image:", observedImage);
         logData.append("observedImage", observedImage); // Send the existing image URL (base64 or URL)
       } else {
-        console.log("No image available, sending empty string.");
         logData.append("observedImage", ""); // Send an empty string if no image exists
       }
     }
 
-    // Send the PATCH request to the backend
     fetch(
       `http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/${logCode}`,
       {
         method: "PATCH",
         body: logData,
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
       }
     )
       .then((response) => {
         if (response.ok) {
           alert("Log updated successfully!");
           $("#logModal").modal("hide");
-          location.reload(); // Refresh the page to reflect changes
+          location.reload();
         } else {
           alert("Failed to update the log. Please try again.");
         }
@@ -210,7 +214,6 @@ $(document).ready(function () {
       });
   }
 
-  // Function to collect table data
   function collectTableData(tableId) {
     const data = [];
     $(tableId + " tbody tr").each(function () {
@@ -223,24 +226,24 @@ $(document).ready(function () {
 
   // Delete Monitoring Log
   $(document).on("click", ".delete-btn", function () {
-    const logCode = $(this).closest("tr").data("log-code"); // Get the logCode for the entry to delete
+    const logCode = $(this).closest("tr").data("log-code");
 
-    // Show confirmation dialog
     const confirmation = confirm("Are you sure you want to delete this log?");
 
     if (confirmation) {
-      // Immediately remove the row from the table
       $(this).closest("tr").remove();
 
-      // Delete the log entry from the backend
       $.ajax({
         url: `http://localhost:5055/cropmonitoringcollector/api/v1/monitoringlogs/${logCode}`,
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
         success: function () {
           console.log(`Log ${logCode} deleted successfully.`);
         },
         error: function (error) {
-          console.error(`Failed to delete log ${logCode}:`, error);
+          console.error("Error deleting monitoring log:", error);
           alert("Error deleting the log. Please try again.");
         },
       });
@@ -373,6 +376,9 @@ $(document).ready(function () {
       {
         method: "POST",
         body: logData, // Send the FormData
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
       }
     )
       .then((response) => {
@@ -389,7 +395,6 @@ $(document).ready(function () {
         alert("Error occurred while saving the log.");
       });
   }
-
   // View Monitoring Log
   $(document).on("click", ".view-btn", function () {
     const row = $(this).closest("tr");
@@ -429,7 +434,6 @@ $(document).ready(function () {
       $(tableId + " tbody").append(`<tr><td>${item}</td></tr>`);
     });
   }
-
   // Reset form after saving the log
   function resetForm() {
     $("#logObservation").val("");
