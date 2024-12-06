@@ -1,8 +1,19 @@
+// Function to get the JWT token from localStorage
+function getAuthToken() {
+  return  localStorage.getItem("authToken"); // Assumes the token is stored in localStorage under the key "token"
+}
+
 // Function to fetch and display all staff data
 async function loadStaffData() {
   try {
+    const token = getAuthToken(); // Get the token
     const response = await fetch(
-      "http://localhost:5055/cropmonitoringcollector/api/v1/staffs/allStaffs"
+      "http://localhost:5055/cropmonitoringcollector/api/v1/staffs/allStaffs",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
+      }
     );
     if (!response.ok) {
       throw new Error("Failed to fetch staff data");
@@ -95,6 +106,7 @@ document
     };
 
     try {
+      const token = getAuthToken(); // Get the token
       let response;
       if (staffMemberId) {
         // Update existing staff (PATCH request)
@@ -104,6 +116,7 @@ document
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
             },
             body: JSON.stringify(staffData),
           }
@@ -116,6 +129,7 @@ document
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
             },
             body: JSON.stringify(staffData),
           }
@@ -152,8 +166,14 @@ document.addEventListener("DOMContentLoaded", loadStaffData);
 // View staff details function
 async function viewStaffDetails(staffMemberId) {
   try {
+    const token = getAuthToken(); // Get the token
     const response = await fetch(
-      `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`
+      `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
+      }
     );
     if (!response.ok) {
       throw new Error("Failed to fetch staff details");
@@ -197,7 +217,12 @@ async function viewStaffDetails(staffMemberId) {
 async function editStaffDetails(staffMemberId) {
   try {
     const response = await fetch(
-      `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`
+      `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
+      }
     );
     if (!response.ok) {
       throw new Error("Failed to fetch staff details for editing");
@@ -212,14 +237,14 @@ async function editStaffDetails(staffMemberId) {
     const form = document.getElementById("staffForm");
     form.setAttribute("data-editing", staffMemberId); // Set the editing ID
 
-    console.log(staff.G)
+    console.log(staff.G);
 
     document.getElementById("firstName").value = staff.firstName;
     document.getElementById("lastName").value = staff.lastName;
     document.getElementById("designation").value = staff.designation;
     document.getElementById("role").value = staff.role;
     document.getElementById("gender").value = staff.gender;
-    document.getElementById("joinedDate").value = formattedJoinedDate;  // Update the joinedDate input field
+    document.getElementById("joinedDate").value = formattedJoinedDate; // Update the joinedDate input field
     document.getElementById("dob").value = staff.DOB;
     document.getElementById("contactNo").value = staff.contactNo;
     document.getElementById("email").value = staff.email;
@@ -231,8 +256,10 @@ async function editStaffDetails(staffMemberId) {
 
     // Change the modal title and button text for editing
     document.getElementById("addStaffModalLabel").textContent = "Edit Staff";
-    const submitButton = document.querySelector("#staffForm button[type='submit']");
-    submitButton.textContent = "Update Staff";  // Change button text to "Update Staff"
+    const submitButton = document.querySelector(
+      "#staffForm button[type='submit']"
+    );
+    submitButton.textContent = "Update Staff"; // Change button text to "Update Staff"
 
     // Show the modal for editing
     const modal = new bootstrap.Modal(document.getElementById("addStaffModal"));
@@ -247,10 +274,14 @@ async function editStaffDetails(staffMemberId) {
 async function deleteStaff(staffMemberId) {
   if (confirm("Are you sure you want to delete this staff member?")) {
     try {
+      const token = getAuthToken(); // Get the token
       const response = await fetch(
         `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          },
         }
       );
 

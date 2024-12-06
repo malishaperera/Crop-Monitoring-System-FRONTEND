@@ -99,7 +99,7 @@ $(document).ready(function () {
   function getAuthToken() {
     const token = localStorage.getItem("authToken"); // Make sure 'token' is the key where the JWT is stored
     return token;  // Return the token so it can be used later
-}
+  }
 
 
   // Handle form submission (add/edit)

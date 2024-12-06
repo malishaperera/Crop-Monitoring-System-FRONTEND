@@ -1,17 +1,23 @@
 $(document).ready(function () {
-
-  let vehiclCODE ;
-  // API endpoints
+  let vehicleCode;
   const vehicleApiUrl =
     "http://localhost:5055/cropmonitoringcollector/api/v1/vehicles/allVehicles";
   const staffApiUrl =
     "http://localhost:5055/cropmonitoringcollector/api/v1/staffs/allStaffs";
+
+  // Get JWT Token from localStorage
+  function getAuthToken() {
+    return localStorage.getItem("authToken");
+  }
 
   // Fetch and populate staff data in the "Staff Member ID" dropdown
   $.ajax({
     url: staffApiUrl,
     method: "GET",
     dataType: "json",
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    },
     success: function (staffData) {
       const staffDropdown = $("#staffMemberId");
       staffDropdown.empty(); // Clear any existing options
@@ -32,6 +38,9 @@ $(document).ready(function () {
       url: vehicleApiUrl,
       method: "GET",
       dataType: "json",
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
       success: function (vehicleData) {
         const tableBody = $("#vehicleTable tbody");
         tableBody.empty(); // Clear existing rows if any
@@ -73,6 +82,9 @@ $(document).ready(function () {
         url: `http://localhost:5055/cropmonitoringcollector/api/v1/vehicles/${vehicleCode}`,
         method: "GET",
         dataType: "json",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
         success: function (vehicleDetails) {
           if (vehicleDetails) {
             // Populate the modal with vehicle details
@@ -95,21 +107,20 @@ $(document).ready(function () {
     });
   }
 
-  
   // Initialize Edit buttons
   function initializeEditButtons() {
     $(".edit-btn").click(function () {
       const vehicleCode = $(this).data("id");
-      console.log("Edit Button Clicked for Vehicle Code: ", vehicleCode); // Debugging line
-  
+
       $.ajax({
         url: `http://localhost:5055/cropmonitoringcollector/api/v1/vehicles/${vehicleCode}`,
         method: "GET",
         dataType: "json",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
         success: function (vehicleDetails) {
           if (vehicleDetails) {
-            console.log("Vehicle details fetched:", vehicleDetails); // Debugging line
-  
             // Populate modal fields
             $("#vehicleCode").val(vehicleDetails.vehicleCode); // Set vehicleCode in hidden input
             $("#licensePlateNumber").val(vehicleDetails.licensePlateNumber);
@@ -118,13 +129,13 @@ $(document).ready(function () {
             $("#status").val(vehicleDetails.status);
             $("#remarks").val(vehicleDetails.remarks);
             $("#staffMemberId").val(vehicleDetails.staffMemberId);
-  
+
             // Change modal title and button text for editing
             $("#addVehicleModalLabel").text("Edit Vehicle");
             $("#saveVehicle")
               .text("Update Vehicle")
               .attr("id", "updateVehicle");
-  
+
             // Show the modal
             $("#addVehicleModal").modal("show");
           } else {
@@ -138,7 +149,6 @@ $(document).ready(function () {
       });
     });
   }
-  
 
   // Initialize Delete buttons
   function initializeDeleteButtons() {
@@ -149,7 +159,10 @@ $(document).ready(function () {
         $.ajax({
           url: `http://localhost:5055/cropmonitoringcollector/api/v1/vehicles/${vehicleCode}`,
           method: "DELETE",
-          success: function (response) {
+          headers: {
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+          success: function () {
             alert("Vehicle deleted successfully!");
             button.closest("tr").remove();
           },
@@ -162,10 +175,11 @@ $(document).ready(function () {
     });
   }
 
+  // Save or update vehicle
   $(document).on("click", "#saveVehicle, #updateVehicle", function () {
     const isUpdate = $(this).attr("id") === "updateVehicle";
     const vehicleCode = $("#vehicleCode").val(); // Get vehicleCode for updates
-  
+
     const vehicleData = {
       licensePlateNumber: $("#licensePlateNumber").val(),
       vehicleCategory: $("#vehicleCategory").val(),
@@ -174,24 +188,22 @@ $(document).ready(function () {
       remarks: $("#remarks").val(),
       staffMemberId: $("#staffMemberId").val(),
     };
-  
+
     const requestUrl = isUpdate
       ? `http://localhost:5055/cropmonitoringcollector/api/v1/vehicles/${vehicleCode}`
       : "http://localhost:5055/cropmonitoringcollector/api/v1/vehicles";
     const requestMethod = isUpdate ? "PATCH" : "POST";
-  
-    console.log("Sending request to:", requestUrl);
-    console.log("Request method:", requestMethod);
-    console.log("Request payload:", JSON.stringify(vehicleData)); // Log payload
-  
+
     // Send request
     $.ajax({
       url: requestUrl,
       method: requestMethod,
       contentType: "application/json",
       data: JSON.stringify(vehicleData),
-      success: function (response) {
-        console.log("Response:", response); // Log response
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+      success: function () {
         alert(
           isUpdate
             ? "Vehicle updated successfully!"
@@ -203,11 +215,9 @@ $(document).ready(function () {
       error: function (xhr, status, error) {
         console.error("Error saving/updating vehicle:", error);
         alert("Failed to save/update vehicle.");
-      }
+      },
     });
   });
-  
-  
 
   // Reset modal when closed
   function resetModal() {
