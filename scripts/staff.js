@@ -1,17 +1,22 @@
 // Function to get the JWT token from localStorage
 function getAuthToken() {
-  return  localStorage.getItem("authToken"); // Assumes the token is stored in localStorage under the key "token"
+  return localStorage.getItem("authToken");
 }
 
 // Function to fetch and display all staff data
 async function loadStaffData() {
+  const token = getAuthToken();
+  if (!token) {
+    alert("You are not authorized. Please log in again.");
+    return;
+  }
+
   try {
-    const token = getAuthToken(); // Get the token
     const response = await fetch(
       "http://localhost:5055/cropmonitoringcollector/api/v1/staffs/allStaffs",
       {
         headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          "Authorization": `Bearer ${token}`,
         },
       }
     );
@@ -31,9 +36,7 @@ async function loadStaffData() {
       staffCard.classList.add("col");
       staffCard.innerHTML = `
         <div class="card shadow-sm">
-          <img src="../image/staff-imge/staff-1.jpg" class="card-img-top" alt="${
-            staff.firstName
-          } ${staff.lastName}" />
+          <img src="../image/staff-imge/staff-1.jpg" class="card-img-top" alt="${staff.firstName} ${staff.lastName}" />
           <div class="card-body">
             <h5 class="card-title">${staff.firstName} ${staff.lastName}</h5>
             <p class="card-text">
@@ -105,8 +108,13 @@ document
       email: document.getElementById("email").value,
     };
 
+    const token = getAuthToken();
+    if (!token) {
+      alert("You are not authorized. Please log in again.");
+      return;
+    }
+
     try {
-      const token = getAuthToken(); // Get the token
       let response;
       if (staffMemberId) {
         // Update existing staff (PATCH request)
@@ -116,7 +124,7 @@ document
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+              "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify(staffData),
           }
@@ -129,7 +137,7 @@ document
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+              "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify(staffData),
           }
@@ -165,13 +173,18 @@ document.addEventListener("DOMContentLoaded", loadStaffData);
 
 // View staff details function
 async function viewStaffDetails(staffMemberId) {
+  const token = getAuthToken();
+  if (!token) {
+    alert("You are not authorized. Please log in again.");
+    return;
+  }
+
   try {
-    const token = getAuthToken(); // Get the token
     const response = await fetch(
       `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          "Authorization": `Bearer ${token}`,
         },
       }
     );
@@ -215,12 +228,18 @@ async function viewStaffDetails(staffMemberId) {
 
 // Edit staff details function
 async function editStaffDetails(staffMemberId) {
+  const token = getAuthToken();
+  if (!token) {
+    alert("You are not authorized. Please log in again.");
+    return;
+  }
+
   try {
     const response = await fetch(
       `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          "Authorization": `Bearer ${token}`,
         },
       }
     );
@@ -237,14 +256,12 @@ async function editStaffDetails(staffMemberId) {
     const form = document.getElementById("staffForm");
     form.setAttribute("data-editing", staffMemberId); // Set the editing ID
 
-    console.log(staff.G);
-
     document.getElementById("firstName").value = staff.firstName;
     document.getElementById("lastName").value = staff.lastName;
     document.getElementById("designation").value = staff.designation;
     document.getElementById("role").value = staff.role;
     document.getElementById("gender").value = staff.gender;
-    document.getElementById("joinedDate").value = formattedJoinedDate; // Update the joinedDate input field
+    document.getElementById("joinedDate").value = formattedJoinedDate;
     document.getElementById("dob").value = staff.DOB;
     document.getElementById("contactNo").value = staff.contactNo;
     document.getElementById("email").value = staff.email;
@@ -254,46 +271,47 @@ async function editStaffDetails(staffMemberId) {
     document.getElementById("addressLine4").value = staff.addressLine4;
     document.getElementById("addressLine5").value = staff.addressLine5;
 
-    // Change the modal title and button text for editing
-    document.getElementById("addStaffModalLabel").textContent = "Edit Staff";
-    const submitButton = document.querySelector(
-      "#staffForm button[type='submit']"
-    );
-    submitButton.textContent = "Update Staff"; // Change button text to "Update Staff"
-
     // Show the modal for editing
-    const modal = new bootstrap.Modal(document.getElementById("addStaffModal"));
+    const modal = new bootstrap.Modal(
+      document.getElementById("addStaffModal")
+    );
     modal.show();
   } catch (error) {
-    console.error("Error fetching staff details for editing:", error);
-    alert("Failed to load staff details. Please try again.");
+    console.error("Error fetching staff for editing:", error);
+    alert("Failed to fetch staff details for editing. Please try again later.");
   }
 }
 
 // Delete staff function
 async function deleteStaff(staffMemberId) {
-  if (confirm("Are you sure you want to delete this staff member?")) {
-    try {
-      const token = getAuthToken(); // Get the token
-      const response = await fetch(
-        `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-          },
-        }
-      );
+  const token = getAuthToken();
+  if (!token) {
+    alert("You are not authorized. Please log in again.");
+    return;
+  }
 
-      if (response.ok) {
-        await loadStaffData();
-        alert("Staff deleted successfully!");
-      } else {
-        alert("Failed to delete staff. Please try again.");
+  const confirmDelete = confirm("Are you sure you want to delete this staff?");
+  if (!confirmDelete) return;
+
+  try {
+    const response = await fetch(
+      `http://localhost:5055/cropmonitoringcollector/api/v1/staffs/${staffMemberId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
       }
-    } catch (error) {
-      console.error("Error deleting staff:", error);
-      alert("An error occurred while deleting the staff. Please try again.");
+    );
+
+    if (response.ok) {
+      alert("Staff deleted successfully!");
+      loadStaffData(); // Reload staff data after deletion
+    } else {
+      alert("Failed to delete staff. Please try again.");
     }
+  } catch (error) {
+    console.error("Error deleting staff:", error);
+    alert("An error occurred while deleting staff. Please try again later.");
   }
 }
