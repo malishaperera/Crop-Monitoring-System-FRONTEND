@@ -1,21 +1,31 @@
+// Utility function to get the token and add it to the request headers
+function getAuthToken() {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    alert("User not authenticated. Redirecting to login page...");
+    window.location.href = "/login.html"; // Redirect to login if not authenticated
+    return null;
+  }
+  return token;
+}
+
 // Load Field Codes dynamically for the dropdown
 async function loadFieldCodes() {
   try {
-    const token = localStorage.getItem("authToken");
+    const token = getAuthToken();
+    if (!token) return; // If no token, return early
+
     const response = await fetch(
-      "http://localhost:5055/cropmonitoringcollector/api/v1/fields/allFields",
-      {
+      "http://localhost:5055/cropmonitoringcollector/api/v1/fields/allFields", {
         headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     if (!response.ok) throw new Error("Failed to fetch fields");
 
     const fields = await response.json();
-    const fieldCodeSelects = document.querySelectorAll(
-      "#fieldCode, #editFieldCode"
-    );
+    const fieldCodeSelects = document.querySelectorAll("#fieldCode, #editFieldCode");
 
     fieldCodeSelects.forEach((select) => {
       select.innerHTML =
@@ -36,13 +46,14 @@ async function loadFieldCodes() {
 // Fetch all crops and populate them as cards in the grid
 async function loadAllCrops() {
   try {
-    const token = localStorage.getItem("authToken");
+    const token = getAuthToken();
+    if (!token) return; // If no token, return early
+
     const response = await fetch(
-      "http://localhost:5055/cropmonitoringcollector/api/v1/crops/allCrops",
-      {
+      "http://localhost:5055/cropmonitoringcollector/api/v1/crops/allCrops", {
         headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     if (!response.ok) throw new Error("Failed to fetch crops");
@@ -121,13 +132,14 @@ function addDeleteButtonListeners() {
 // Function to fetch crop details and populate the view modal
 async function fetchCropDetails(cropCode) {
   try {
-    const token = localStorage.getItem("authToken");
+    const token = getAuthToken();
+    if (!token) return; // If no token, return early
+
     const response = await fetch(
-      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`,
-      {
+      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     if (!response.ok) throw new Error("Failed to fetch crop details");
@@ -135,12 +147,9 @@ async function fetchCropDetails(cropCode) {
     const crop = await response.json();
 
     // Populate modal with crop details
-    document.getElementById(
-      "viewCropImage"
-    ).src = `data:image/jpeg;base64,${crop.cropImage}`;
+    document.getElementById("viewCropImage").src = `data:image/jpeg;base64,${crop.cropImage}`;
     document.getElementById("viewCropName").textContent = crop.cropCommonName;
-    document.getElementById("viewCropScientificName").textContent =
-      crop.cropScientificName;
+    document.getElementById("viewCropScientificName").textContent = crop.cropScientificName;
     document.getElementById("viewCropCategory").textContent = crop.category;
     document.getElementById("viewCropSeason").textContent = crop.cropSeason;
     document.getElementById("viewCropFieldCode").textContent = crop.fieldCode;
@@ -157,23 +166,21 @@ async function fetchCropDetails(cropCode) {
 
 // Function to delete a crop
 async function deleteCrop(cropCode) {
-  const token = localStorage.getItem("authToken");
   try {
+    const token = getAuthToken();
+    if (!token) return; // If no token, return early
+
     const response = await fetch(
-      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`,
-      {
+      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`, {
         method: "DELETE",
         headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
 
     if (response.ok) {
-      document
-        .querySelector(`[data-id="${cropCode}"]`)
-        .closest(".col-3")
-        .remove();
+      document.querySelector(`[data-id="${cropCode}"]`).closest(".col-3").remove();
       alert("Crop deleted successfully!");
     } else {
       const errorMessage = await response.text();
@@ -187,14 +194,15 @@ async function deleteCrop(cropCode) {
 
 // Function to populate the edit form
 async function populateEditForm(cropCode) {
-  const token = localStorage.getItem("authToken");
   try {
+    const token = getAuthToken();
+    if (!token) return; // If no token, return early
+
     const response = await fetch(
-      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`,
-      {
+      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     if (!response.ok) throw new Error("Failed to fetch crop details");
@@ -203,17 +211,14 @@ async function populateEditForm(cropCode) {
 
     // Populate the edit form fields
     document.getElementById("editCropName").value = crop.cropCommonName;
-    document.getElementById("editCropScientificName").value =
-      crop.cropScientificName;
+    document.getElementById("editCropScientificName").value = crop.cropScientificName;
     document.getElementById("editCategory").value = crop.category;
     document.getElementById("editSeason").value = crop.cropSeason;
     document.getElementById("editFieldCode").value = crop.fieldCode;
     document.getElementById("editCropImage").value = ""; // Reset file input
 
     // Store cropCode as a data attribute for later use
-    document
-      .getElementById("editCropForm")
-      .setAttribute("data-crop-code", cropCode);
+    document.getElementById("editCropForm").setAttribute("data-crop-code", cropCode);
 
     // Show the modal
     const modal = new bootstrap.Modal(document.getElementById("editCropModal"));
@@ -225,126 +230,113 @@ async function populateEditForm(cropCode) {
 }
 
 // Handle form submission for adding a new crop
-document
-  .getElementById("addCropForm")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
+document.getElementById("addCropForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-    const cropCommonName = document.getElementById("cropName").value;
-    const cropScientificName =
-      document.getElementById("cropScientificName").value;
-    const category = document.getElementById("category").value;
-    const cropSeason = document.getElementById("season").value;
-    const fieldCode = document.getElementById("fieldCode").value;
-    const cropImageFile = document.getElementById("cropImage").files[0];
+  const token = getAuthToken();
+  if (!token) return; // If no token, return early
 
-    if (!cropImageFile) {
-      alert("Please upload an image!");
-      return;
-    }
+  const cropCommonName = document.getElementById("cropName").value;
+  const cropScientificName = document.getElementById("cropScientificName").value;
+  const category = document.getElementById("category").value;
+  const cropSeason = document.getElementById("season").value;
+  const fieldCode = document.getElementById("fieldCode").value;
+  const cropImageFile = document.getElementById("cropImage").files[0];
 
-    const formData = new FormData();
-    formData.append("cropCommonName", cropCommonName);
-    formData.append("cropScientificName", cropScientificName);
-    formData.append("category", category);
-    formData.append("cropSeason", cropSeason);
-    formData.append("fieldCode", fieldCode);
-    formData.append("cropImage", cropImageFile);
+  if (!cropImageFile) {
+    alert("Please upload an image!");
+    return;
+  }
 
-    try {
-      const response = await fetch(
-        "http://localhost:5055/cropmonitoringcollector/api/v1/crops",
-        {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+  const formData = new FormData();
+  formData.append("cropCommonName", cropCommonName);
+  formData.append("cropScientificName", cropScientificName);
+  formData.append("category", category);
+  formData.append("cropSeason", cropSeason);
+  formData.append("fieldCode", fieldCode);
+  formData.append("cropImage", cropImageFile);
 
-      if (response.ok) {
-        loadAllCrops();
-        alert("Crop saved successfully!");
-        document.getElementById("addCropForm").reset();
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById("addCropModal")
-        );
-        modal.hide();
-      } else {
-        const errorMessage = await response.text();
-        alert(`Error adding crop: ${errorMessage}`);
+  try {
+    const response = await fetch(
+      "http://localhost:5055/cropmonitoringcollector/api/v1/crops", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
       }
-    } catch (error) {
-      console.error("Error adding crop:", error);
-      alert("An error occurred. Please try again later.");
+    );
+
+    if (response.ok) {
+      alert("Crop added successfully!");
+      loadAllCrops(); // Reload crops after adding
+      document.getElementById("addCropForm").reset();
+    } else {
+      const errorMessage = await response.text();
+      alert(`Error adding crop: ${errorMessage}`);
     }
-  });
+  } catch (error) {
+    console.error("Error adding crop:", error);
+    alert("An error occurred while adding the crop. Please try again.");
+  }
+});
 
-// Handle form submission for editing a crop
-// Handle form submission for editing a crop
-document
-  .getElementById("editCropForm")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
+// Edit crop submission
+document.getElementById("editCropForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-    const cropCode = e.target.getAttribute("data-crop-code");
-    const cropCommonName = document.getElementById("editCropName").value;
-    const cropScientificName = document.getElementById(
-      "editCropScientificName"
-    ).value;
-    const category = document.getElementById("editCategory").value;
-    const cropSeason = document.getElementById("editSeason").value;
-    const fieldCode = document.getElementById("editFieldCode").value;
-    const cropImageFile = document.getElementById("editCropImage").files[0];
+  const token = getAuthToken();
+  if (!token) return; // If no token, return early
 
-    const formData = new FormData();
-    formData.append("cropCommonName", cropCommonName);
-    formData.append("cropScientificName", cropScientificName);
-    formData.append("category", category);
-    formData.append("cropSeason", cropSeason);
-    formData.append("fieldCode", fieldCode);
+  const cropCode = document.getElementById("editCropForm").getAttribute("data-crop-code");
+  const cropCommonName = document.getElementById("editCropName").value;
+  const cropScientificName = document.getElementById("editCropScientificName").value;
+  const category = document.getElementById("editCategory").value;
+  const cropSeason = document.getElementById("editSeason").value;
+  const fieldCode = document.getElementById("editFieldCode").value;
+  const cropImageFile = document.getElementById("editCropImage").files[0];
 
-    if (cropImageFile) {
-      formData.append("cropImage", cropImageFile);
-    }
+  const formData = new FormData();
+  formData.append("cropCommonName", cropCommonName);
+  formData.append("cropScientificName", cropScientificName);
+  formData.append("category", category);
+  formData.append("cropSeason", cropSeason);
+  formData.append("fieldCode", fieldCode);
+  if (cropImageFile) formData.append("cropImage", cropImageFile);
 
-    try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch(
-        `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
-
-      if (response.ok) {
-        loadAllCrops(); // Refresh the crops display
-        alert("Crop updated successfully!");
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById("editCropModal")
-        );
-        modal.hide();
-      } else {
-        const errorMessage = await response.text();
-        alert(`Error updating crop: ${errorMessage}`);
+  try {
+    const response = await fetch(
+      `http://localhost:5055/cropmonitoringcollector/api/v1/crops/${cropCode}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
       }
-    } catch (error) {
-      console.error("Error updating crop:", error);
-      alert("An error occurred. Please try again later.");
-    }
-  });
+    );
 
+    if (response.ok) {
+      alert("Crop updated successfully!");
+      loadAllCrops(); // Reload crops after update
+      const modal = bootstrap.Modal.getInstance(document.getElementById("editCropModal"));
+      modal.hide();
+    } else {
+      const errorMessage = await response.text();
+      alert(`Error updating crop: ${errorMessage}`);
+    }
+  } catch (error) {
+    console.error("Error updating crop:", error);
+    alert("An error occurred while updating the crop. Please try again.");
+  }
+});
+
+// Initialize functions on page load
+// window.onload = function () {
+//   loadFieldCodes();
+//   loadAllCrops();
+// };
 // Initial load of field codes and crops
 document.addEventListener("DOMContentLoaded", () => {
   loadFieldCodes();
   loadAllCrops();
 });
-
-
-//This Crop
-
